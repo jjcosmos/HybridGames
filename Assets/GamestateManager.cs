@@ -5,7 +5,8 @@ using UnityEngine;
 public class GamestateManager : MonoBehaviour
 {
     // Start is called before the first frame update
-    public enum TileType {blank, point, player};
+    public enum TileType {blank, point, player, invalid};
+    public int bounds = 5;
     int[,] Gameboard;
     void Start()
     {
@@ -40,12 +41,46 @@ public class GamestateManager : MonoBehaviour
 
     public TileType GetTypeAtIndex(int _i, int _j)
     {
-        int value = Gameboard[_i, _j];
+        int value;
+        try
+        {
+            value = Gameboard[_i, _j];
+        }
+        catch (System.Exception)
+        {
+            return TileType.invalid;
+        }
+        
         if(value == 0)
         {
             return TileType.blank;
         }
         else if(value < 10)
+        {
+            return TileType.point;
+        }
+        else
+        {
+            return TileType.player;
+        }
+    }
+    public TileType GetTypeAtIndex(Vector2 position)
+    {
+        int value;
+        try
+        {
+            value = Gameboard[(int)position.x, (int)position.y];
+        }
+        catch (System.Exception)
+        {
+            return TileType.invalid;
+        }
+
+        if (value == 0)
+        {
+            return TileType.blank;
+        }
+        else if (value < 10)
         {
             return TileType.point;
         }
