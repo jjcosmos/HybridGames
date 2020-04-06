@@ -28,18 +28,18 @@ public class PlayerMoveSet
     //action types: 0 is move, 1 is stop, 2 is attack
     public bool AddMove(int direction, int actionType)
     {
-        Debug.Log($"Try adding a move {actionType} in the direction {direction}");
-        Debugger.instance.Push($"Try adding a move {actionType} in the direction {direction}");
+        //Debug.Log($"Try adding a move {actionType} in the direction {direction}");
+        //Debugger.instance.Push($"Try adding a move {actionType} in the direction {direction}");
         if(Directions.Count >= 3)
         {
-            Debug.LogWarning("Moves are full for this turn");
+            Debugger.instance.Push("Moves are full for this turn");
             return false;
         }
 
 
         if (actionType == ATTACK && ActionTypes.Count >= 2)
         {
-            Debug.LogWarning("You cannot add an attack action with 1 action space left");
+            Debugger.instance.Push("You cannot add an attack action with 1 action space left");
             return false;
         }
         else if (actionType == ATTACK && ActionTypes.Count < 2)
@@ -48,21 +48,25 @@ public class PlayerMoveSet
             ActionTypes.Add(actionType);
             Directions.Add(0);
             ActionTypes.Add(STUN);
+            Debugger.instance.Push($"Attack added in direction {direction}");
+            return true;
         }
         else if (actionType == STOP && !hasUsedStop)
         {
             Directions.Add(direction);
             ActionTypes.Add(actionType);
             hasUsedStop = true;
+            Debugger.instance.Push($"Stop added in direction {direction}");
             return true;
         }
         else if (actionType == MOVE)
         {
             Directions.Add(direction);
             ActionTypes.Add(actionType);
+            Debugger.instance.Push($"Move added in direction {direction}");
             return true;
         }
-        Debug.Log($"Bad choice :(  hasStopped is {hasUsedStop}");
+        //Debug.Log($"Bad choice :(  hasStopped is {hasUsedStop}");
         return false;
         
     }
@@ -122,6 +126,11 @@ public class PlayerMoveSet
             return true;
         }
         return false;
+    }
+
+    public int GetDirectionsCount()
+    {
+        return Directions.Count;
     }
 
     public string GetMovesetAsString()

@@ -61,7 +61,7 @@ public class InputManager : MonoBehaviour
 
     public void OnSubmitPressed()
     {
-        Debug.Log($"Turn complete for {player}. Turn consists of\n {myPlayers.RespectivePlayerTurns[player-1].GetMovesetAsString()}");
+        //Debug.Log($"Turn complete for {player}. Turn consists of\n {myPlayers.RespectivePlayerTurns[player-1].GetMovesetAsString()}");
         Debugger.instance.Push($"Turn complete for {player}. Turn consists of\n {myPlayers.RespectivePlayerTurns[player - 1].GetMovesetAsString()}");
     }
 
@@ -70,10 +70,12 @@ public class InputManager : MonoBehaviour
         if(myPlayers.RespectivePlayerTurns[player-1].IsComplete())
         {
             SubmitButton.interactable = true;
+            Debugger.instance.Push("Turn can be completed");
         }
         else
         {
             SubmitButton.interactable = false;
+            Debugger.instance.Push($"Turn can not be completed. Completed turns is {myPlayers.RespectivePlayerTurns[player - 1].GetDirectionsCount()}");
         }
     }
 
