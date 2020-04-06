@@ -28,7 +28,8 @@ public class PlayerMoveSet
     //action types: 0 is move, 1 is stop, 2 is attack
     public bool AddMove(int direction, int actionType)
     {
-        Debug.Log($"Adding a move {actionType} in the direction {direction}");
+        Debug.Log($"Try adding a move {actionType} in the direction {direction}");
+        Debugger.instance.Push($"Try adding a move {actionType} in the direction {direction}");
         if(Directions.Count >= 3)
         {
             Debug.LogWarning("Moves are full for this turn");

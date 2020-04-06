@@ -52,12 +52,17 @@ public class InputManager : MonoBehaviour
         {
             myPlayers.RespectivePlayerTurns[player-1].AddMove(dir, act);
         }
+        else
+        {
+            Debugger.instance.Push("Turn is complete. Nothing else can be added at the moment.");
+        }
         UpdateSubmitButton();
     }
 
     public void OnSubmitPressed()
     {
         Debug.Log($"Turn complete for {player}. Turn consists of\n {myPlayers.RespectivePlayerTurns[player-1].GetMovesetAsString()}");
+        Debugger.instance.Push($"Turn complete for {player}. Turn consists of\n {myPlayers.RespectivePlayerTurns[player - 1].GetMovesetAsString()}");
     }
 
     private void UpdateSubmitButton()
