@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 public class InputManager : MonoBehaviour
 {
     // Temporary, server will replace this code
@@ -13,6 +14,10 @@ public class InputManager : MonoBehaviour
     [SerializeField] Slider ActionTypeInput;
     [SerializeField] Button LockMoveButton;
     [SerializeField] Button SubmitButton;
+
+    [SerializeField] TextMeshProUGUI PlayerIndicator;
+    [SerializeField] TextMeshProUGUI DirectionIndicator;
+    [SerializeField] TextMeshProUGUI ActionIndicator;
 
 
     int player;
@@ -33,17 +38,20 @@ public class InputManager : MonoBehaviour
     public void OnPlayerSliderValueChanged()
     {
         player = (int)PlayerSlider.value;
+        PlayerIndicator.text = player.ToString();
         UpdateSubmitButton();
     }
 
     public void OnDirectionSliderValueChanged()
     {
         dir = (int)DirectionInput.value;
+        DirectionIndicator.text = dir.ToString();
     }
 
     public void OnActionSliderValueChanged()
     {
         act = (int)ActionTypeInput.value;
+        ActionIndicator.text = act.ToString();
     }
 
     public void OnLockTurnPressed()
