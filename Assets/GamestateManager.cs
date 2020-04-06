@@ -8,7 +8,7 @@ public class GamestateManager : MonoBehaviour
     public enum TileType {blank, point, player, invalid};
     public int bounds = 5;
     int[,] Gameboard;
-    void Start()
+    void Awake()
     {
         //0 is empty, 10 is player 1, 20 is player 2
         //1 is 1 point tile
@@ -103,5 +103,28 @@ public class GamestateManager : MonoBehaviour
             return false;
         }
         
+    }
+
+    public int[,] GetGameboard()
+    {
+        return Gameboard;
+    }
+
+    public string GetGameboardAsText()
+    {
+        string temp = "";
+        for (int i = 0; i < 5; i++)
+        {
+            for (int j = 0; j < 5; j++)
+            {
+                temp += Gameboard[i, j] + " ";
+                if(Gameboard[i, j] < 10)
+                {
+                    temp += "  ";
+                }
+            }
+            temp += "\n";
+        }
+        return temp;
     }
 }
