@@ -16,6 +16,16 @@ public class Players : MonoBehaviour
         for (int i = 0; i < numPlayers; i++)
         {
             RespectivePlayerTurns.Add(new PlayerMoveSet());
+            Vector2 loggedCachePosition = new Vector2();
+            if (i == 0)
+            {
+                loggedCachePosition = new Vector2(4,2);
+            }
+            else if (i == 1)
+            {
+                loggedCachePosition = new Vector2(0,2);
+            }
+            RespectivePlayerTurns[i].cachePosition = loggedCachePosition;
         }
     }
 

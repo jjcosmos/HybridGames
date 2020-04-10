@@ -13,9 +13,5 @@ public class GBVisals : MonoBehaviour
         board.text = gameState.GetGameboardAsText();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

@@ -18,6 +18,12 @@ public class PlayerMoveSet
     readonly Vector2 DOWN = new Vector2(-1, 0);
     readonly Vector2 LEFT = new Vector2(-1, 0);
 
+    public bool isTurnNulled;
+    public bool isEliminated;
+
+    public Vector2 currentPosition;
+    public Vector2 cachePosition;
+
     public PlayerMoveSet()
     {
         Directions = new List<int>();

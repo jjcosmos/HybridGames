@@ -7,6 +7,7 @@ public class InputManager : MonoBehaviour
 {
     // Temporary, server will replace this code
     [SerializeField] Players myPlayers;
+    [SerializeField] GamestateManager gameManager;
     bool allPlayersSubmitted;
 
     [SerializeField] Slider PlayerSlider;
@@ -14,6 +15,8 @@ public class InputManager : MonoBehaviour
     [SerializeField] Slider ActionTypeInput;
     [SerializeField] Button LockMoveButton;
     [SerializeField] Button SubmitButton;
+
+    [SerializeField] Button ExecuteTurnsButton;
 
     [SerializeField] TextMeshProUGUI PlayerIndicator;
     [SerializeField] TextMeshProUGUI DirectionIndicator;
@@ -85,6 +88,34 @@ public class InputManager : MonoBehaviour
             SubmitButton.interactable = false;
             Debugger.instance.Push($"Turn can not be completed. Completed turns is {myPlayers.RespectivePlayerTurns[player - 1].GetDirectionsCount()}");
         }
+
+        UpdateExecuteButton();
+    }
+
+    public void OnExecutePressed()
+    {
+        
+        for (int currentTurn = 0; currentTurn < 3; currentTurn++)
+        {
+            GamestateManager.ResultType result = gameManager.TryMovePlayer(myPlayers, currentTurn);
+            if(result == GamestateManager.ResultType.stalemated)
+            {
+                //do something. IDK how > 2 players is gonna work
+            }
+        }
+    }
+
+    private void UpdateExecuteButton()
+    {
+        foreach (var item in myPlayers.RespectivePlayerTurns)
+        {
+            if (!item.IsComplete())
+            {
+                ExecuteTurnsButton.interactable = false;
+                return;
+            }
+        }
+        ExecuteTurnsButton.interactable = true;
     }
 
     
