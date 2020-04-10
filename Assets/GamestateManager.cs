@@ -202,9 +202,10 @@ public class GamestateManager : MonoBehaviour
                     ((myMovetoPosition) == playerTurn.cachePosition &&
                     !(playerTurn.isTurnNulled || playerTurn.isEliminated));
 
-                //my player moving into an empty space
+                //my player moving into an empty uncontested space
                 bool condit10 =
-                    ((GetTypeAtIndex(myMovetoPosition)) == TileType.blank;
+                    ((GetTypeAtIndex(myMovetoPosition)) == TileType.blank &&
+                    others.GetPositionOfMove(this, turn, GetPlayerLocation(otherplayerIndex)) != myMovetoPosition);
 
 
 
@@ -219,9 +220,11 @@ public class GamestateManager : MonoBehaviour
                 }
                 else
                 {
-                    if(true)
+                    if(condit10)
                     {
-
+                        int playerValue = Gameboard[(int)myCurrentPosition.x, (int)myCurrentPosition.y];
+                        EditValueAt((int)myMovetoPosition.x, (int)myMovetoPosition.y, playerValue);
+                        EditValueAt((int)myCurrentPosition.x, (int)myCurrentPosition.y, 0);
                     }
                 }
             }
