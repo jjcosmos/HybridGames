@@ -107,18 +107,19 @@ public class InputManager : MonoBehaviour
                 ResetAll();
                 //break;
             }
-            else if (result == GamestateManager.ResultType.eliminatedOther || result == GamestateManager.ResultType.selfEliminated)
+            else if (result == GamestateManager.ResultType.eliminatedOther || result == GamestateManager.ResultType.selfEliminated || result == GamestateManager.ResultType.endByCache)
             {
                 //reset round;
-                Debugger.instance.Push("Player Eliminated");
+                Debugger.instance.Push($"Game finished with result type {result}");
                 ResetAll();
                 //break;
             }
             else
             {
+                Debugger.instance.Push($"Turn {currentTurnI} completed successfully");
                 currentTurnI++;
             }
-            Debugger.instance.Push($"Turn {currentTurnI} completed successfully");
+            
 
             if(currentTurnI >= 3)
             {

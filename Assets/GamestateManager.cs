@@ -7,7 +7,7 @@ public class GamestateManager : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] InputManager inputManager;
     public enum TileType { blank, point, player, invalid };
-    public enum ResultType { moved, selfEliminated, eliminatedOther, collectedPoint, cached, stalemated }
+    public enum ResultType { moved, selfEliminated, eliminatedOther, collectedPoint, cached, stalemated, endByCache }
     public int bounds = 5;
     int[,] Gameboard;
     int[,] GameboardCopy;
@@ -374,6 +374,7 @@ public class GamestateManager : MonoBehaviour
         }
 
         //START INDEP EVENTS
+        ResultType returnType = ResultType.moved;
         if (condit10)
         {
             if (GetTypeAtIndex(p1MovetoPosition) == TileType.point)
@@ -389,7 +390,7 @@ public class GamestateManager : MonoBehaviour
 
                 if (IsBoardClearable())
                 {
-                    //end round and count cache
+                    returnType = ResultType.endByCache;
                 }
             }
             int playerValue = Gameboard[(int)p1CurrentPosition.x, (int)p1CurrentPosition.y];
@@ -412,13 +413,14 @@ public class GamestateManager : MonoBehaviour
                 if (IsBoardClearable())
                 {
                     //end round and count cache
+                    returnType = ResultType.endByCache;
                 }
             }
             int playerValue = Gameboard[(int)p2CurrentPosition.x, (int)p2CurrentPosition.y];
             EditValueAt((int)p2MoveToPosition.x, (int)p2MoveToPosition.y, playerValue);
             EditValueAt((int)p2CurrentPosition.x, (int)p2CurrentPosition.y, 0);
         }
-        return ResultType.moved;
+        return returnType;
         //END INDEP EVENTS
 
     }
