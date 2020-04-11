@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class PlayerMoveSet
 {
-    List<int> Directions;
-    List<int> ActionTypes;
+    [SerializeField] List<int> Directions;
+    [SerializeField] List<int> ActionTypes;
     bool hasUsedStop;
 
     readonly int MOVE = 0;
@@ -13,10 +14,11 @@ public class PlayerMoveSet
     readonly int ATTACK = 2;
     readonly int STUN = 3;
 
-    readonly Vector2 UP = new Vector2(0, 1);
-    readonly Vector2 RIGHT = new Vector2(1, 0);
-    readonly Vector2 DOWN = new Vector2(-1, 0);
-    readonly Vector2 LEFT = new Vector2(-1, 0);
+    //This looks weird, but is correct
+    readonly Vector2 UP = new Vector2(-1, 0);
+    readonly Vector2 RIGHT = new Vector2(0, 1);
+    readonly Vector2 DOWN = new Vector2(1, 0);
+    readonly Vector2 LEFT = new Vector2(0, -1);
 
     public bool isTurnNulled;
     public bool isEliminated;
@@ -25,6 +27,13 @@ public class PlayerMoveSet
     public Vector2 cachePosition;
 
     public PlayerMoveSet()
+    {
+        Directions = new List<int>();
+        ActionTypes = new List<int>();
+        hasUsedStop = false;
+    }
+
+    public void Reset()
     {
         Directions = new List<int>();
         ActionTypes = new List<int>();
@@ -96,24 +105,28 @@ public class PlayerMoveSet
             case 1:
                 if(board.GetTypeAtIndex(currentPosition + UP) != GamestateManager.TileType.invalid)
                 {
+                    Debugger.instance.Push($"Moving {board.GetGameboard()[(int)currentPosition.x, (int)currentPosition.y]} in direction UP to {currentPosition + UP}");
                     return currentPosition + UP;
                 }
                 break;
             case 2:
                 if (board.GetTypeAtIndex(currentPosition + RIGHT) != GamestateManager.TileType.invalid)
                 {
+                    Debugger.instance.Push($"Moving {board.GetGameboard()[(int)currentPosition.x, (int)currentPosition.y]} in direction RIGHT to {currentPosition + RIGHT}");
                     return currentPosition + RIGHT;
                 }
                 break;
             case 3:
                 if (board.GetTypeAtIndex(currentPosition + DOWN) != GamestateManager.TileType.invalid)
                 {
+                    Debugger.instance.Push($"Moving {board.GetGameboard()[(int)currentPosition.x, (int)currentPosition.y]} in direction DOWN to {currentPosition + DOWN}");
                     return currentPosition + DOWN;
                 }
                 break;
             case 4:
                 if (board.GetTypeAtIndex(currentPosition + LEFT) != GamestateManager.TileType.invalid)
                 {
+                    Debugger.instance.Push($"Moving {board.GetGameboard()[(int)currentPosition.x, (int)currentPosition.y]} in direction LEFT to {currentPosition + LEFT}");
                     return currentPosition + LEFT;
                 }
                 break;

@@ -27,6 +27,7 @@ public class InputManager : MonoBehaviour
     int dir;
     int act;
     bool editable = false;
+    int currentTurnI;
     //PlayerMoveSet currentMoves;
     private void Start()
     {
@@ -94,15 +95,35 @@ public class InputManager : MonoBehaviour
 
     public void OnExecutePressed()
     {
-        
-        for (int currentTurn = 0; currentTurn < 3; currentTurn++)
+
+        if (currentTurnI < 3)
         {
-            GamestateManager.ResultType result = gameManager.TryMovePlayers(myPlayers, currentTurn);
-            if(result == GamestateManager.ResultType.stalemated)
+
+            GamestateManager.ResultType result = gameManager.TryMovePlayers(myPlayers, currentTurnI);
+
+            if (result == GamestateManager.ResultType.stalemated)
             {
-                //do something. IDK how > 2 players is gonna work
+                foreach (PlayerMoveSet player in myPlayers.RespectivePlayerTurns)
+                {
+                    player.Reset();
+
+                }
+                Debugger.instance.Push("Bonk");
+                currentTurnI = 0;
+                //break;
             }
+            else if (result == GamestateManager.ResultType.eliminatedOther || result == GamestateManager.ResultType.selfEliminated)
+            {
+                //reset round;
+                Debugger.instance.Push("Player Eliminated");
+                currentTurnI = 0;
+                //break;
+            }
+            Debugger.instance.Push($"Turn {currentTurnI} completed succ cessfully");
         }
+        currentTurnI++;
+        UpdateExecuteButton();
+        UpdateSubmitButton();
     }
 
     private void UpdateExecuteButton()

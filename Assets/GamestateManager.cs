@@ -44,8 +44,9 @@ public class GamestateManager : MonoBehaviour
         {
             for (int j = 0; j < 5; j++)
             {
-                if (Gameboard[i, j] == player * 10)
+                if (Gameboard[i, j] == (player * 10))
                 {
+                    //Debugger.instance.Push($"Found player {player} at {i},{j}");
                     return new Vector2(i, j);
                 }
             }
@@ -87,6 +88,7 @@ public class GamestateManager : MonoBehaviour
         }
         catch (System.Exception)
         {
+            Debugger.instance.Push($"Returing invalid position at {position}");
             return TileType.invalid;
         }
 
@@ -190,51 +192,53 @@ public class GamestateManager : MonoBehaviour
         int p1ActionType = (int)player1.GetActionAt(turn).y;
         Vector2 p1MovetoPosition = player1.GetPositionOfMove(this, turn, GetPlayerLocation(playerIndex));
         Vector2 p1CurrentPosition = GetPlayerLocation(playerIndex);
+        Debugger.instance.Push($"Player1 starting at {p1CurrentPosition} and moving to {p1MovetoPosition}");
 
         Vector2 p2CurrentPosition = GetPlayerLocation(otherplayerIndex);
         Vector2 p2MoveToPosition = player2.GetPositionOfMove(this, turn, p2CurrentPosition);
+        Debugger.instance.Push($"Player2 starting at {p2CurrentPosition} and moving to {p2MoveToPosition}");
 
-        
+
         //my player attacking space moved (or stopped) into
         bool condit1 =
-            (p1MovetoPosition == player2.GetPositionOfMove(this, turn, GetPlayerLocation(otherplayerIndex)) &&
+            (p1MovetoPosition == p2MoveToPosition &&
             (player2.GetActionAt(turn).y == MOVE || player2.GetActionAt(turn).y == STOP) &&
             p1ActionType == ATTACK);
 
         //my player moving or stopping with other attacking into
         bool condit1_b =
-            (p1MovetoPosition == player2.GetPositionOfMove(this, turn, GetPlayerLocation(otherplayerIndex)) &&
+            (p1MovetoPosition == p2MoveToPosition &&
             (player2.GetActionAt(turn).y == ATTACK) &&
             (p1ActionType == MOVE ||p1ActionType== STOP));
 
         //my player attacking space attacked into
         bool condit2 =
-            (p1MovetoPosition == player2.GetPositionOfMove(this, turn, GetPlayerLocation(otherplayerIndex)) &&
+            (p1MovetoPosition == p2MoveToPosition &&
             player2.GetActionAt(turn).y == 2 &&
             p1ActionType == 2);
 
         //both players attempt to occupy a point tile
         bool condit3 =
-            (p1MovetoPosition == player2.GetPositionOfMove(this, turn, GetPlayerLocation(otherplayerIndex)) &&
+            (p1MovetoPosition == p2MoveToPosition &&
             GetTypeAtIndex(p1MovetoPosition) == TileType.point);
 
         //my player moving into a space moved into
         bool condit4 =
-            (p1MovetoPosition == player2.GetPositionOfMove(this, turn, GetPlayerLocation(otherplayerIndex)) &&
+            (p1MovetoPosition == p2MoveToPosition &&
             p1ActionType == 0 &&
             player2.GetActionAt(turn).y == 0);
 
         //my player attacking space another player is in WHILE the other player is moving into MY space 
         bool condit5 =
-            (p1MovetoPosition == GetPlayerLocation(playerIndex) &&
-            player2.GetPositionOfMove(this, turn, GetPlayerLocation(otherplayerIndex)) == p1CurrentPosition &&
+            (p1MovetoPosition == GetPlayerLocation(otherplayerIndex) &&
+            p2MoveToPosition == p1CurrentPosition &&
             p1ActionType == ATTACK &&
             player2.GetActionAt(turn).y == MOVE);
 
         //b version of one above
         bool condit5_b =
-            (p1MovetoPosition == GetPlayerLocation(playerIndex) &&
-            player2.GetPositionOfMove(this, turn, GetPlayerLocation(otherplayerIndex)) == p1CurrentPosition &&
+            (p2MoveToPosition == GetPlayerLocation(playerIndex) &&
+            p1MovetoPosition == p2CurrentPosition &&
             p1ActionType == MOVE &&
             player2.GetActionAt(turn).y == ATTACK);
 
@@ -300,12 +304,14 @@ public class GamestateManager : MonoBehaviour
             EditValueAt(p1MovetoPosition, 0);
             player1.isTurnNulled = true;
             player2.isTurnNulled = true;
+            Debugger.instance.Push("condit2 and 3");
             return ResultType.stalemated;
         }
         else if (condit2 && !condit3)
         {
             player1.isTurnNulled = true;
             player2.isTurnNulled = true;
+            Debugger.instance.Push("condit2 and not 3");
             return ResultType.stalemated;
         }
         else if (condit4 && condit3)
@@ -313,12 +319,14 @@ public class GamestateManager : MonoBehaviour
             EditValueAt(p1MovetoPosition, 0);
             player1.isTurnNulled = true;
             player2.isTurnNulled = true;
+            Debugger.instance.Push("condit 4 and 3");
             return ResultType.stalemated;
         }
         else if (condit4 && !condit3)
         {
             player1.isTurnNulled = true;
             player2.isTurnNulled = true;
+            Debugger.instance.Push($"condit 4 and not 3. Bonk'd at {p1MovetoPosition} {p2MoveToPosition}");
             return ResultType.stalemated;
         }
         else if (condit5)
@@ -343,6 +351,7 @@ public class GamestateManager : MonoBehaviour
         {
             player1.isTurnNulled = true;
             player2.isTurnNulled = true;
+            Debugger.instance.Push("Condit6");
             return ResultType.stalemated;
         }
 
@@ -371,7 +380,7 @@ public class GamestateManager : MonoBehaviour
         }
         if (condit10_b)
         {
-            if (GetTypeAtIndex(p1MovetoPosition) == TileType.point)
+            if (GetTypeAtIndex(p2MoveToPosition) == TileType.point)
             {
                 //add value of movetoposition to current Player's points
                 player2inventory += Gameboard[(int)p2MoveToPosition.x, (int)p2MoveToPosition.y];
@@ -394,11 +403,5 @@ public class GamestateManager : MonoBehaviour
         return ResultType.moved;
         //END INDEP EVENTS
 
-
-
-
-
-
-        return ResultType.moved; //PH
     }
 }

@@ -13,5 +13,8 @@ public class GBVisals : MonoBehaviour
         board.text = gameState.GetGameboardAsText();
     }
 
-    
+    private void FixedUpdate()
+    {
+        board.text = gameState.GetGameboardAsText();
+    }
 }
