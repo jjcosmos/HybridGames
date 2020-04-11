@@ -97,7 +97,7 @@ public class InputManager : MonoBehaviour
         
         for (int currentTurn = 0; currentTurn < 3; currentTurn++)
         {
-            GamestateManager.ResultType result = gameManager.TryMovePlayer(myPlayers, currentTurn);
+            GamestateManager.ResultType result = gameManager.TryMovePlayers(myPlayers, currentTurn);
             if(result == GamestateManager.ResultType.stalemated)
             {
                 //do something. IDK how > 2 players is gonna work
