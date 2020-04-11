@@ -100,6 +100,7 @@ public class InputManager : MonoBehaviour
         {
 
             GamestateManager.ResultType result = gameManager.TryMovePlayers(myPlayers, currentTurnI);
+            
 
             if (result == GamestateManager.ResultType.stalemated)
             {
@@ -119,9 +120,22 @@ public class InputManager : MonoBehaviour
                 currentTurnI = 0;
                 //break;
             }
+            else
+            {
+                currentTurnI++;
+            }
             Debugger.instance.Push($"Turn {currentTurnI} completed succ cessfully");
         }
-        currentTurnI++;
+        else
+        {
+            foreach (PlayerMoveSet player in myPlayers.RespectivePlayerTurns)
+            {
+                currentTurnI = 0;
+                player.Reset();
+            }
+
+        }
+        
         UpdateExecuteButton();
         UpdateSubmitButton();
     }

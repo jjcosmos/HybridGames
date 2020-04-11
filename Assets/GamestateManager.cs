@@ -15,13 +15,13 @@ public class GamestateManager : MonoBehaviour
     readonly int STUN = 3;
     readonly int WIN_BONUS = 3;
 
-    int player1score;
-    int player1inventory;
-    int player1cache;
+    public int player1score;
+    public int player1inventory;
+    public int player1cache;
 
-    int player2score;
-    int player2inventory;
-    int player2cache;
+    public int player2score;
+    public int player2inventory;
+    public int player2cache;
     void Awake()
     {
         //0 is empty, 10 is player 1, 20 is player 2
@@ -168,14 +168,14 @@ public class GamestateManager : MonoBehaviour
         {
             for (int j = 0; j < 5; j++)
             {
-                
-                if (Gameboard[i, j] == 1 || Gameboard[i,j] == 2)
+
+                if (Gameboard[i, j] == 1 || Gameboard[i, j] == 2)
                 {
                     temp = false;
                     return temp;
                 }
             }
-            
+
         }
         return temp;
     }
@@ -187,7 +187,7 @@ public class GamestateManager : MonoBehaviour
         PlayerMoveSet player1 = myPlayers.RespectivePlayerTurns[0];
         PlayerMoveSet player2 = myPlayers.RespectivePlayerTurns[1];
 
-        
+
         int myDirection = (int)player1.GetActionAt(turn).x;
         int p1ActionType = (int)player1.GetActionAt(turn).y;
         Vector2 p1MovetoPosition = player1.GetPositionOfMove(this, turn, GetPlayerLocation(playerIndex));
@@ -209,7 +209,7 @@ public class GamestateManager : MonoBehaviour
         bool condit1_b =
             (p1MovetoPosition == p2MoveToPosition &&
             (player2.GetActionAt(turn).y == ATTACK) &&
-            (p1ActionType == MOVE ||p1ActionType== STOP));
+            (p1ActionType == MOVE || p1ActionType == STOP));
 
         //my player attacking space attacked into
         bool condit2 =
@@ -217,7 +217,7 @@ public class GamestateManager : MonoBehaviour
             player2.GetActionAt(turn).y == 2 &&
             p1ActionType == 2);
 
-        //both players attempt to occupy a point tile
+        //both players attempt to occupy the same point tile
         bool condit3 =
             (p1MovetoPosition == p2MoveToPosition &&
             GetTypeAtIndex(p1MovetoPosition) == TileType.point);
@@ -256,24 +256,24 @@ public class GamestateManager : MonoBehaviour
             p1ActionType == MOVE &&
             player2.GetActionAt(turn).y == ATTACK);
 
-        //my player moving into a point square while not nulled (not eliminated or stalemated) -- Do close to last
+        //my player moving into a point square while not nulled (not eliminated or stalemated) -- Do close to last OBSOLETE
         bool condit8 =
             (GetTypeAtIndex(p1MovetoPosition) == TileType.point &&
             !(player1.isTurnNulled || player1.isEliminated));
 
-        //my player moving into cache while not nulled
+        //my player moving into cache while not nulled OBSOLETE
         bool condit9 =
             ((p1MovetoPosition) == player1.cachePosition &&
             !(player1.isTurnNulled || player1.isEliminated));
 
         //my player moving into an empty uncontested space
         bool condit10 =
-            ((GetTypeAtIndex(p1MovetoPosition)) == TileType.blank &&
+            (((GetTypeAtIndex(p1MovetoPosition)) == TileType.blank || (GetTypeAtIndex(p1MovetoPosition)) == TileType.point) &&
             player2.GetPositionOfMove(this, turn, GetPlayerLocation(otherplayerIndex)) != p1MovetoPosition);
 
         //my player moving into an empty uncontested space
         bool condit10_b =
-            ((GetTypeAtIndex(p2MoveToPosition)) == TileType.blank &&
+            (((GetTypeAtIndex(p2MoveToPosition)) == TileType.blank || (GetTypeAtIndex(p2MoveToPosition)) == TileType.point) &&
             player2.GetPositionOfMove(this, turn, GetPlayerLocation(otherplayerIndex)) != p1MovetoPosition);
 
         bool player1Cache = (p1MovetoPosition == player1.cachePosition);
@@ -288,6 +288,7 @@ public class GamestateManager : MonoBehaviour
             // Add points to current player
             // Eliminate other player and end round
             player1cache += WIN_BONUS;
+            Debugger.instance.Push("condit1");
             return ResultType.eliminatedOther;
         }
         else if (condit1_b)
@@ -297,6 +298,7 @@ public class GamestateManager : MonoBehaviour
             // Add points to other player
             // Eliminate  player and ends round
             player2cache += WIN_BONUS;
+            Debugger.instance.Push("condit1_b");
             return ResultType.selfEliminated;
         }
         else if (condit2 && condit3)// both players attack a space with a point on it
@@ -336,6 +338,7 @@ public class GamestateManager : MonoBehaviour
             // Add points to current player
             // Eliminate other player and end round
             player1cache += WIN_BONUS;
+            Debugger.instance.Push("condit5");
             return ResultType.eliminatedOther;
         }
         else if (condit5_b)
@@ -345,6 +348,7 @@ public class GamestateManager : MonoBehaviour
             // Add points to other player
             // Eliminate my player and end round
             player2cache += WIN_BONUS;
+            Debugger.instance.Push("condit5_b");
             return ResultType.selfEliminated;
         }
         else if (condit6)
