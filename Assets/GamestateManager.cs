@@ -5,10 +5,12 @@ using UnityEngine;
 public class GamestateManager : MonoBehaviour
 {
     // Start is called before the first frame update
+    [SerializeField] InputManager inputManager;
     public enum TileType { blank, point, player, invalid };
     public enum ResultType { moved, selfEliminated, eliminatedOther, collectedPoint, cached, stalemated }
     public int bounds = 5;
     int[,] Gameboard;
+    int[,] GameboardCopy;
     readonly int MOVE = 0;
     readonly int STOP = 1;
     readonly int ATTACK = 2;
@@ -30,6 +32,14 @@ public class GamestateManager : MonoBehaviour
         //x for x < 10 is and x point tile
         Gameboard = new int[5, 5]
         {
+            { 0, 0, 20, 0, 0 },
+            { 1, 0, 0,  0, 1 },
+            { 2, 1, 0,  0, 2 },
+            { 1, 0, 0,  0, 1 },
+            { 0, 0, 10, 0, 0 }
+        };
+
+        GameboardCopy = new int[5, 5]{
             { 0, 0, 20, 0, 0 },
             { 1, 0, 0,  0, 1 },
             { 2, 1, 0,  0, 2 },
@@ -289,6 +299,7 @@ public class GamestateManager : MonoBehaviour
             // Eliminate other player and end round
             player1cache += WIN_BONUS;
             Debugger.instance.Push("condit1");
+            ShiftCacheAndReset();
             return ResultType.eliminatedOther;
         }
         else if (condit1_b)
@@ -299,6 +310,7 @@ public class GamestateManager : MonoBehaviour
             // Eliminate  player and ends round
             player2cache += WIN_BONUS;
             Debugger.instance.Push("condit1_b");
+            ShiftCacheAndReset();
             return ResultType.selfEliminated;
         }
         else if (condit2 && condit3)// both players attack a space with a point on it
@@ -339,6 +351,7 @@ public class GamestateManager : MonoBehaviour
             // Eliminate other player and end round
             player1cache += WIN_BONUS;
             Debugger.instance.Push("condit5");
+            ShiftCacheAndReset();
             return ResultType.eliminatedOther;
         }
         else if (condit5_b)
@@ -349,6 +362,7 @@ public class GamestateManager : MonoBehaviour
             // Eliminate my player and end round
             player2cache += WIN_BONUS;
             Debugger.instance.Push("condit5_b");
+            ShiftCacheAndReset();
             return ResultType.selfEliminated;
         }
         else if (condit6)
@@ -407,5 +421,18 @@ public class GamestateManager : MonoBehaviour
         return ResultType.moved;
         //END INDEP EVENTS
 
+    }
+
+    private void ShiftCacheAndReset()
+    {
+        Debugger.instance.Push("Shifting cache and resetting");
+        player1score += player1cache;
+        player2score += player2cache;
+        player1cache = 0;
+        player2cache = 0;
+        player1inventory = 0;
+        player2inventory = 0;
+        //Gameboard = GameboardCopy;
+        Gameboard = GameboardCopy.Clone() as int[,];
     }
 }

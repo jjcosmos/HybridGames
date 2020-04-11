@@ -27,7 +27,7 @@ public class InputManager : MonoBehaviour
     int dir;
     int act;
     bool editable = false;
-    int currentTurnI;
+    public int currentTurnI;
     //PlayerMoveSet currentMoves;
     private void Start()
     {
@@ -104,40 +104,44 @@ public class InputManager : MonoBehaviour
 
             if (result == GamestateManager.ResultType.stalemated)
             {
-                foreach (PlayerMoveSet player in myPlayers.RespectivePlayerTurns)
-                {
-                    player.Reset();
-
-                }
-                Debugger.instance.Push("Bonk");
-                currentTurnI = 0;
+                ResetAll();
                 //break;
             }
             else if (result == GamestateManager.ResultType.eliminatedOther || result == GamestateManager.ResultType.selfEliminated)
             {
                 //reset round;
                 Debugger.instance.Push("Player Eliminated");
-                currentTurnI = 0;
+                ResetAll();
                 //break;
             }
             else
             {
                 currentTurnI++;
             }
-            Debugger.instance.Push($"Turn {currentTurnI} completed succ cessfully");
+            Debugger.instance.Push($"Turn {currentTurnI} completed successfully");
+
+            if(currentTurnI >= 3)
+            {
+                ResetAll();
+            }
         }
         else
         {
-            foreach (PlayerMoveSet player in myPlayers.RespectivePlayerTurns)
-            {
-                currentTurnI = 0;
-                player.Reset();
-            }
+            ResetAll();
 
         }
         
         UpdateExecuteButton();
         UpdateSubmitButton();
+    }
+
+    private void ResetAll()
+    {
+        foreach (PlayerMoveSet player in myPlayers.RespectivePlayerTurns)
+        {
+            currentTurnI = 0;
+            player.Reset();
+        }
     }
 
     private void UpdateExecuteButton()
