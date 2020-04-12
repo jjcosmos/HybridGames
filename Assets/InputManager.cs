@@ -75,6 +75,7 @@ public class InputManager : MonoBehaviour
         if (currPlayer.GetDirectionsCount() == 0)
         {
             pos = currPlayer.GetPositionOfMove(gameManager, dir, pos,true);
+            Debugger.instance.Push($"Testing chain 1 position {pos} for validity...");
         }
         else if(currPlayer.GetDirectionsCount() == 1)
         {
