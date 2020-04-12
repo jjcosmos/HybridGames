@@ -67,9 +67,20 @@ public class InputManager : MonoBehaviour
 
     public void OnLockTurnPressed()
     {
-        if (!myPlayers.RespectivePlayerTurns[player-1].IsComplete())
+        Vector2 pos = myPlayers.RespectivePlayerTurns[player - 1].currentPosition;
+        bool isVaildType = (act == 1 ) || (dir != 0 && act != 1);
+        bool canBeCompleted = (isVaildType && gameManager.GetTypeAtIndex((int)pos.x, (int)pos.y) != GamestateManager.TileType.invalid);
+        if (!myPlayers.RespectivePlayerTurns[player-1].IsComplete() && canBeCompleted)
         {
-            myPlayers.RespectivePlayerTurns[player-1].AddMove(dir, act);
+            if(act != 1)
+            {
+                myPlayers.RespectivePlayerTurns[player-1].AddMove(dir, act);
+            }
+            else
+            {
+                myPlayers.RespectivePlayerTurns[player - 1].AddMove(0, act);
+            }
+            
         }
         else
         {
