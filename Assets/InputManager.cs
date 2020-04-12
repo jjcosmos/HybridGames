@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
 public class InputManager : MonoBehaviour
 {
     // Temporary, server will replace this code
@@ -28,6 +29,12 @@ public class InputManager : MonoBehaviour
     int act;
     bool editable = false;
     public int currentTurnI;
+    public UnityEvent OnTurnExecute;
+
+    private void Awake()
+    {
+        OnTurnExecute = new UnityEvent();
+    }
     //PlayerMoveSet currentMoves;
     private void Start()
     {
@@ -100,7 +107,7 @@ public class InputManager : MonoBehaviour
         {
 
             GamestateManager.ResultType result = gameManager.TryMovePlayers(myPlayers, currentTurnI);
-            
+            OnTurnExecute.Invoke();
 
             if (result == GamestateManager.ResultType.stalemated)
             {
