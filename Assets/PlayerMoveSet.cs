@@ -33,6 +33,24 @@ public class PlayerMoveSet
         hasUsedStop = false;
     }
 
+    public Vector2 GetOffset(int direction)
+    {
+        switch (direction)
+        {
+            case 0:
+                return currentPosition;
+            case 1:
+                return UP;
+            case 2:
+                return RIGHT;
+            case 3:
+                return DOWN;
+            case 4:
+                return LEFT;
+            default:
+                return Vector2.zero;
+        }
+    }
     public void Reset()
     {
         Directions = new List<int>();
@@ -134,6 +152,53 @@ public class PlayerMoveSet
                 break;
                 
                 
+        }
+        return new Vector2(-1, -1);
+    }
+
+    public Vector2 GetPositionOfMove(GamestateManager board, int direction, Vector2 currentPosition, bool onion)
+    {
+        //   1
+        // 4 0 2
+        //   3
+
+        int dir = direction;
+        switch (dir)
+        {
+            case 0:
+                return currentPosition;
+            case 1:
+                if (board.GetTypeAtIndex(currentPosition + UP) != GamestateManager.TileType.invalid)
+                {
+                    Debugger.instance.Push($"Moving {board.GetGameboard()[(int)currentPosition.x, (int)currentPosition.y]} in direction UP to {currentPosition + UP}");
+                    return currentPosition + UP;
+                }
+                break;
+            case 2:
+                if (board.GetTypeAtIndex(currentPosition + RIGHT) != GamestateManager.TileType.invalid)
+                {
+                    Debugger.instance.Push($"Moving {board.GetGameboard()[(int)currentPosition.x, (int)currentPosition.y]} in direction RIGHT to {currentPosition + RIGHT}");
+                    return currentPosition + RIGHT;
+                }
+                break;
+            case 3:
+                if (board.GetTypeAtIndex(currentPosition + DOWN) != GamestateManager.TileType.invalid)
+                {
+                    Debugger.instance.Push($"Moving {board.GetGameboard()[(int)currentPosition.x, (int)currentPosition.y]} in direction DOWN to {currentPosition + DOWN}");
+                    return currentPosition + DOWN;
+                }
+                break;
+            case 4:
+                if (board.GetTypeAtIndex(currentPosition + LEFT) != GamestateManager.TileType.invalid)
+                {
+                    Debugger.instance.Push($"Moving {board.GetGameboard()[(int)currentPosition.x, (int)currentPosition.y]} in direction LEFT to {currentPosition + LEFT}");
+                    return currentPosition + LEFT;
+                }
+                break;
+            default:
+                break;
+
+
         }
         return new Vector2(-1, -1);
     }

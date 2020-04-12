@@ -67,7 +67,35 @@ public class InputManager : MonoBehaviour
 
     public void OnLockTurnPressed()
     {
-        Vector2 pos = myPlayers.RespectivePlayerTurns[player - 1].currentPosition;
+        PlayerMoveSet currPlayer = myPlayers.RespectivePlayerTurns[player - 1];
+        Vector2 pos = gameManager.GetPlayerLocation(player);
+
+
+
+        if (currPlayer.GetDirectionsCount() == 0)
+        {
+            pos = currPlayer.GetPositionOfMove(gameManager, dir, pos,true);
+        }
+        else if(currPlayer.GetDirectionsCount() == 1)
+        {
+            pos = currPlayer.GetPositionOfMove(gameManager, (int)currPlayer.GetActionAt(0).x, pos,true);
+            Debugger.instance.Push($"Testing chain 1 position {pos} for validity...");
+            pos = currPlayer.GetPositionOfMove(gameManager, dir, pos,true);
+            Debugger.instance.Push($"Testing chain 2 position {pos} for validity...");
+        }
+        else if(currPlayer.GetDirectionsCount() == 2)
+        {
+            pos = currPlayer.GetPositionOfMove(gameManager, (int)currPlayer.GetActionAt(0).x, pos,true);
+            Debugger.instance.Push($"Testing chain 1 position {pos} for validity...");
+            pos = currPlayer.GetPositionOfMove(gameManager, (int)currPlayer.GetActionAt(1).x, pos,true);
+            Debugger.instance.Push($"Testing chain 2 position {pos} for validity...");
+            pos = currPlayer.GetPositionOfMove(gameManager, dir, pos,true);
+            Debugger.instance.Push($"Testing chain 3 position {pos} for validity...");
+        }
+
+        
+        
+        Debugger.instance.Push($"Testing position {pos} for validity...");
         bool isVaildType = (act == 1 ) || (dir != 0 && act != 1);
         bool canBeCompleted = (isVaildType && gameManager.GetTypeAtIndex((int)pos.x, (int)pos.y) != GamestateManager.TileType.invalid);
         if (!myPlayers.RespectivePlayerTurns[player-1].IsComplete() && canBeCompleted)
