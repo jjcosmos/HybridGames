@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
+using System;
 public class InputManager : MonoBehaviour
 {
     // Temporary, server will replace this code
@@ -65,7 +66,7 @@ public class InputManager : MonoBehaviour
         ActionIndicator.text = act.ToString();
     }
 
-    public void OnLockTurnPressed()
+    public void OnLockTurnPressed()//should be on lock action
     {
 
         bool isVaildType = (act == 1 ) || (dir != 0 && act != 1);
@@ -209,5 +210,30 @@ public class InputManager : MonoBehaviour
         ExecuteTurnsButton.interactable = true;
     }
 
-    
+    public void ProcessInput(string numString)
+    {
+        if(numString.Length != 6)
+        {
+            Debugger.instance.Push($"INPUT INVALID. 6 Chars needed.");
+            return;
+        }
+        for (int i = 0; i < 6; i+=2)
+        {
+            int turnAction = numString[i] - '0';
+            int turnDirection = numString[i + 1] - '0';
+            if(turnAction < 3 && turnDirection < 5)
+            {
+                dir = turnDirection;
+                act = turnAction;
+                OnLockTurnPressed();
+            }
+            else
+            {
+                Debugger.instance.Push($"INPUT INVALID AT TURN INDEX {i}. Resetting player {player}'s turn.");
+                myPlayers.RespectivePlayerTurns[player - 1].Reset();
+                //clear action
+            }
+            
+        }
+    }
 }
