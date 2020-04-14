@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class TurnStringInput : MonoBehaviour
 {
@@ -15,7 +16,11 @@ public class TurnStringInput : MonoBehaviour
 
     public void OnSubmit()
     {
-        Debug.LogError("Done editing");
-        myInput.ProcessInput(input.text);
+        //string newString = Utility.EncodeInt32(Utility.BASE32, Int32.Parse("1"+input.text));
+        string newString = input.text;
+        //Debug.LogError("Done editing");
+        string decoded = Utility.DecodeInt32(Utility.BASE32, newString).ToString();
+        Debug.Log(decoded);
+        myInput.ProcessInput(decoded);
     }
 }

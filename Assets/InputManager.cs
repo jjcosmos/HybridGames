@@ -212,12 +212,12 @@ public class InputManager : MonoBehaviour
 
     public void ProcessInput(string numString)
     {
-        if(numString.Length != 6)
+        if(numString.Length != 7 && numString.Length !=5)
         {
-            Debugger.instance.Push($"INPUT INVALID. 6 Chars needed.");
+            Debugger.instance.Push($"INPUT INVALID. 6 Chars needed. Given {numString}");
             return;
         }
-        for (int i = 0; i < 6; i+=2)
+        for (int i = 1; i < numString.Length; i+=2)
         {
             int turnAction = numString[i] - '0';
             int turnDirection = numString[i + 1] - '0';
