@@ -24,6 +24,7 @@ public class TurnStringInput : MonoBehaviour
             string decoded = Utility.DecodeInt32(Utility.BASE32, newString).ToString();
             Debug.Log(decoded);
             myInput.ProcessInput(decoded);
+            ButtonSfx.bSFX.PlayButtonSound();
         }
         
     }

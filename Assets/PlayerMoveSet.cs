@@ -54,9 +54,11 @@ public class PlayerMoveSet
     }
     public void Reset()
     {
-        Directions = new List<int>();
-        ActionTypes = new List<int>();
+        Directions.Clear();
+        ActionTypes.Clear();
         hasUsedStop = false;
+        isTurnNulled = false;
+        isEliminated = false;
     }
 
     //action types: 0 is move, 1 is stop, 2 is attack

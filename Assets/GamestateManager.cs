@@ -61,6 +61,7 @@ public class GamestateManager : MonoBehaviour
                 }
             }
         }
+        Debug.LogError($"player {player} not found");
         return new Vector2(-1, -1);
     }
 
@@ -319,6 +320,7 @@ public class GamestateManager : MonoBehaviour
             player1.isTurnNulled = true;
             player2.isTurnNulled = true;
             Debugger.instance.Push("condit2 and 3");
+            //ShiftCacheAndReset();
             return ResultType.stalemated;
         }
         else if (condit2 && !condit3)
@@ -326,6 +328,7 @@ public class GamestateManager : MonoBehaviour
             player1.isTurnNulled = true;
             player2.isTurnNulled = true;
             Debugger.instance.Push("condit2 and not 3");
+            //ShiftCacheAndReset();
             return ResultType.stalemated;
         }
         else if (condit4 && condit3)
@@ -334,6 +337,7 @@ public class GamestateManager : MonoBehaviour
             player1.isTurnNulled = true;
             player2.isTurnNulled = true;
             Debugger.instance.Push("condit 4 and 3");
+            //ShiftCacheAndReset();
             return ResultType.stalemated;
         }
         else if (condit4 && !condit3)
@@ -341,6 +345,7 @@ public class GamestateManager : MonoBehaviour
             player1.isTurnNulled = true;
             player2.isTurnNulled = true;
             Debugger.instance.Push($"condit 4 and not 3. Bonk'd at {p1MovetoPosition} {p2MoveToPosition}");
+            //ShiftCacheAndReset();
             return ResultType.stalemated;
         }
         else if (condit5)
@@ -391,6 +396,7 @@ public class GamestateManager : MonoBehaviour
                 if (IsBoardClearable())
                 {
                     returnType = ResultType.endByCache;
+                    
                 }
             }
             int playerValue = Gameboard[(int)p1CurrentPosition.x, (int)p1CurrentPosition.y];
@@ -414,11 +420,18 @@ public class GamestateManager : MonoBehaviour
                 {
                     //end round and count cache
                     returnType = ResultType.endByCache;
+                    
+
                 }
             }
             int playerValue = Gameboard[(int)p2CurrentPosition.x, (int)p2CurrentPosition.y];
             EditValueAt((int)p2MoveToPosition.x, (int)p2MoveToPosition.y, playerValue);
             EditValueAt((int)p2CurrentPosition.x, (int)p2CurrentPosition.y, 0);
+        }
+
+        if(returnType == ResultType.endByCache)
+        {
+            ShiftCacheAndReset();
         }
         return returnType;
         //END INDEP EVENTS

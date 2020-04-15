@@ -31,9 +31,10 @@ public class InputManager : MonoBehaviour
     bool editable = false;
     public int currentTurnI;
     public UnityEvent OnTurnExecute;
-
+    private bool firstTime = true;
     private void Awake()
     {
+        firstTime = true;
         OnTurnExecute = new UnityEvent();
     }
     //PlayerMoveSet currentMoves;
@@ -52,12 +53,23 @@ public class InputManager : MonoBehaviour
         player = (int)PlayerSlider.value;
         PlayerIndicator.text = player.ToString();
         UpdateSubmitButton();
+        if (!firstTime)
+        {
+            ButtonSfx.bSFX.PlayButtonSound();
+            
+        }
+        else
+        {
+            firstTime = false;
+        }
+        
     }
 
     public void OnDirectionSliderValueChanged()
     {
         dir = (int)DirectionInput.value;
         DirectionIndicator.text = dir.ToString();
+        
     }
 
     public void OnActionSliderValueChanged()
@@ -73,6 +85,8 @@ public class InputManager : MonoBehaviour
         bool canBeCompleted = (isVaildType && CheckChainValidity());
         if (!myPlayers.RespectivePlayerTurns[player-1].IsComplete() && canBeCompleted)
         {
+           
+
             if(act != 1)
             {
                 myPlayers.RespectivePlayerTurns[player-1].AddMove(dir, act);
@@ -147,12 +161,12 @@ public class InputManager : MonoBehaviour
 
     public void OnExecutePressed()
     {
-
+        ButtonSfx.bSFX.PlayButtonSound();
         if (currentTurnI < 3)
         {
 
             GamestateManager.ResultType result = gameManager.TryMovePlayers(myPlayers, currentTurnI);
-            OnTurnExecute.Invoke();
+            
 
             if (result == GamestateManager.ResultType.stalemated)
             {
@@ -194,6 +208,7 @@ public class InputManager : MonoBehaviour
             {
                 ResetAll();
             }
+            OnTurnExecute.Invoke();
         }
         else
         {
@@ -212,6 +227,7 @@ public class InputManager : MonoBehaviour
             currentTurnI = 0;
             player.Reset();
         }
+        OnTurnExecute.Invoke();
     }
 
     private void UpdateExecuteButton()
@@ -229,6 +245,7 @@ public class InputManager : MonoBehaviour
 
     public void ProcessInput(string numString)
     {
+        bool attackFlag = false;
         if(numString.Length != 7 && numString.Length !=5)
         {
             Debugger.instance.Push($"INPUT INVALID. 6 Chars needed. Given {numString}");
@@ -238,6 +255,10 @@ public class InputManager : MonoBehaviour
         {
             int turnAction = numString[i] - '0';
             int turnDirection = numString[i + 1] - '0';
+
+
+            
+
             if(turnAction < 3 && turnDirection < 5)
             {
                 dir = turnDirection;
@@ -249,8 +270,22 @@ public class InputManager : MonoBehaviour
                 Debugger.instance.Push($"INPUT INVALID AT TURN INDEX {i}. Resetting player {player}'s turn.");
                 myPlayers.RespectivePlayerTurns[player - 1].Reset();
                 //clear action
+                return;
             }
-            
+
+            if (act == 2)
+            {
+                Debugger.instance.Push($"Flagging attack at index {i} of {numString}");
+                attackFlag = true;
+            }
+
+        }
+
+        if (numString.Length < 6 && !attackFlag)
+        {
+            Debugger.instance.Push($"INPUT INVALID FOR STUN. Resetting player {player}'s turn.");
+            myPlayers.RespectivePlayerTurns[player - 1].Reset();
+            return;
         }
     }
 }
