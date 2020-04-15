@@ -156,6 +156,7 @@ public class InputManager : MonoBehaviour
 
             if (result == GamestateManager.ResultType.stalemated)
             {
+                NotiText._out.PushText($"Turn Stalemated");
                 ResetAll();
                 //break;
             }
@@ -164,6 +165,22 @@ public class InputManager : MonoBehaviour
                 //reset round;
                 Debugger.instance.Push($"Game finished with result type {result}");
                 ResetAll();
+                switch (result)
+                {
+                    
+                    case GamestateManager.ResultType.selfEliminated:
+                        NotiText._out.PushText($"Round Over: Player 1 Eliminated");
+                        break;
+                    case GamestateManager.ResultType.eliminatedOther:
+                        NotiText._out.PushText($"Round Over: Player 1 Eliminated");
+                        break;
+                    case GamestateManager.ResultType.endByCache:
+                        NotiText._out.PushText($"Round Over: Last Cache");
+                        break;
+                    default:
+                        break;
+                }
+                
                 //break;
             }
             else
