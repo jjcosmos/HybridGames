@@ -7,10 +7,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 19793957291032822, guid: 26458897aba48864cbe0bfa01899914c,
+        type: 3}
+      propertyPath: m_text
+      value: II
+      objectReference: {fileID: 0}
+    - target: {fileID: 19793957291032822, guid: 26458897aba48864cbe0bfa01899914c,
+        type: 3}
+      propertyPath: m_textInfo.characterCount
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4539485276836314588, guid: 26458897aba48864cbe0bfa01899914c,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 6056869643705231908, guid: 26458897aba48864cbe0bfa01899914c,
         type: 3}
       propertyPath: m_Name
-      value: PointTile Variant
+      value: PointTile 2
       objectReference: {fileID: 0}
     - target: {fileID: 6056869643705231909, guid: 26458897aba48864cbe0bfa01899914c,
         type: 3}
