@@ -5,6 +5,7 @@ using TMPro;
 public class Debugger : MonoBehaviour
 {
     // Start is called before the first frame update
+    public bool enableDebugging;
     public static Debugger instance;
     TextMeshProUGUI Log;
     [SerializeField] List<string> LogText;
@@ -18,6 +19,10 @@ public class Debugger : MonoBehaviour
 
     public void Push(string newText)
     {
+        if (!enableDebugging)
+        {
+            return;
+        }
         if(LogText.Count >= maxLines)
         {
             LogText.RemoveAt(0);
