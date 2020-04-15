@@ -15,9 +15,15 @@ public class BoardGraphicsManager : MonoBehaviour
     [SerializeField] Transform player1;
     [SerializeField] Transform player2;
     [SerializeField] GameObject point1Prefab; 
-    [SerializeField] GameObject point2Prefab; 
+    [SerializeField] GameObject point2Prefab;
+
+    [Header("Sound")]
+    [SerializeField] AudioClip moveSound;
+
+    private AudioSource myAudioSource;
     void Start()
     {
+        myAudioSource = GetComponent<AudioSource>();
         myInputManager.OnTurnExecute.AddListener(OnNewTurn);
         Vector2 p1LocOnArray = myGamestate.GetPlayerLocation(1);
         Vector2 p2LocOnArray = myGamestate.GetPlayerLocation(2);
@@ -62,6 +68,7 @@ public class BoardGraphicsManager : MonoBehaviour
         Vector2 p2LocOnArray = myGamestate.GetPlayerLocation(2);
         player1.position = myGrid.GetGridSpaceAt((int)p1LocOnArray.x, (int)p1LocOnArray.y).transform.position;
         player2.position = myGrid.GetGridSpaceAt((int)p2LocOnArray.x, (int)p2LocOnArray.y).transform.position;
+        myAudioSource.PlayOneShot(moveSound);
     }
 
     public void OnNewTurn()

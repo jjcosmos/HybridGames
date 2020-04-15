@@ -8,6 +8,7 @@ public class PlayerMoveSet
     [SerializeField] List<int> Directions;
     [SerializeField] List<int> ActionTypes;
     bool hasUsedStop;
+    
 
     readonly int MOVE = 0;
     readonly int STOP = 1;
