@@ -83,7 +83,7 @@ namespace database
 
         private void OnDestroy()
         {
-            database.GetReference(gameID).RemoveValueAsync();
+            //database.GetReference(gameID).RemoveValueAsync();
         }
     }
 }

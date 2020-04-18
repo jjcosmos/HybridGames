@@ -13,6 +13,7 @@ namespace database
         private FirebaseDatabase database;
         private DatabasePlayerMoveInfo player;
         private string gameID;
+        private int playerID = 0;
 
         // Start is called before the first frame update
         void Start()
@@ -40,23 +41,23 @@ namespace database
                     Debug.Log("Error: Lobby Full");
                     return false;
                 }
-                player.playerID = 1;
+                playerID = 1;
             }
-            await database.GetReference(gameID).Child(player.playerID.ToString()).SetRawJsonValueAsync(JsonUtility.ToJson(player));
-            Debug.Log("Player " + player.playerID + "Joined session: " + gameID);
+            await database.GetReference(gameID).Child(playerID.ToString()).SetRawJsonValueAsync(JsonUtility.ToJson(player));
+            Debug.Log("Player " + playerID + "Joined session: " + gameID);
             return true;
         }
 
-        //Sends a turn to the database for the controlled player
+        //Sends a turn to the database for the controlled player (must have a game id set)
         public void SendTurnToDatabase(string move)
         {
             //prevents players from sending moves when not in a game
             if (gameID == string.Empty)
                 throw new System.Exception("Cannot send a turn without being connected to a game.");
 
-            Debug.Log("Move: " + move + " recieved from player: " + player.playerID);
+            Debug.Log("Move: " + move + " recieved from player: " + playerID);
             player.move = move;
-            database.GetReference(gameID).Child(player.playerID.ToString()).SetRawJsonValueAsync(JsonUtility.ToJson(player));
+            database.GetReference(gameID).Child(playerID.ToString()).SetRawJsonValueAsync(JsonUtility.ToJson(player));
         }
 
         private async Task<bool> PlayerExists()
@@ -76,7 +77,7 @@ namespace database
 
         private void OnDestroy()
         {
-            database.GetReference(gameID).Child(player.playerID.ToString()).RemoveValueAsync();
+            database.GetReference(gameID).Child(playerID.ToString()).RemoveValueAsync();
         }
     }
 }

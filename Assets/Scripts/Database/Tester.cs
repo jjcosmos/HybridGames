@@ -23,7 +23,7 @@ public class Tester : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Mouse0))
         {
-            //mobile.SendTurnToDatabase(2);
+            mobile.SendTurnToDatabase("example");
         }
     }
     

@@ -7,7 +7,7 @@ namespace database
     [Serializable]
     public class DatabasePlayerMoveInfo
     {
-        public int playerID = 0;
+        //public int playerID = 0;
         public string move = "";
     }
 }
