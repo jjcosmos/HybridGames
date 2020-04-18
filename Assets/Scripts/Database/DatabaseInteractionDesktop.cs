@@ -30,7 +30,7 @@ namespace database
             
         }
 
-        Dictionary<int, string> GetTurnFromDatabase(int playerid)
+        Dictionary<int, string> GetTurnFromDatabase()
         {
             Dictionary<int, string> move = new Dictionary<int, string>();
             move.Add(0, database.GetReference(gameID).Child("0").GetValueAsync().ToString());

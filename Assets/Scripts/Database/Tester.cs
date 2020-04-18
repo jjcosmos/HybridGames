@@ -25,6 +25,11 @@ public class Tester : MonoBehaviour
         {
             mobile.SendTurnToDatabase("example");
         }
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            //Dictionary<int, string> result = mobile.
+            //Debug.Log();
+        }
     }
     
     
