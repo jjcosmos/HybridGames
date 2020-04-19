@@ -31,6 +31,6 @@ public class CodeGenerator : MonoBehaviour
         Debug.Log(myTurn);
         output.text = Utility.EncodeInt32(Utility.BASE32, Int32.Parse(myTurn));
 
-        dbMobile.SendTurnToDatabase(output.text);
+        dbMobile.SendTurnToDatabase(output.text); //need to find out if there is an event when
     }
 }
