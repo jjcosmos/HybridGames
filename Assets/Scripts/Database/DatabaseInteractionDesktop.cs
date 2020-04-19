@@ -21,6 +21,7 @@ namespace database
         // Start is called before the first frame update
         async void Start()
         {
+            
             database = FirebaseDatabase.DefaultInstance;
             gameID = await generateGameIDAsync();
             await database.GetReference(gameID).SetValueAsync(0);
