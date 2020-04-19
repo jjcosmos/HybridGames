@@ -6,6 +6,7 @@ using Firebase;
 using Firebase.Database;
 using System.Threading.Tasks;
 
+
 namespace database
 {
     public class DatabaseInteractionMobile : MonoBehaviour
@@ -14,6 +15,7 @@ namespace database
         private DatabasePlayerMoveInfo player;
         private string gameID;
         private int playerID = 0;
+
 
         // Start is called before the first frame update
         void Start()

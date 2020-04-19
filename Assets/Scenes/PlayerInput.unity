@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -734,7 +734,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1126686092}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1126686094}
+        m_MethodName: TryJoin
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1126686092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -783,6 +794,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f862233637ee2ed42b8f0eaa4355295a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  input: {fileID: 549949813}
+  dbInteractionM: {fileID: 1504410191}
+  cManager: {fileID: 1191403285}
+  onSuccess:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!1 &1191403284
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1191403286}
+  - component: {fileID: 1191403285}
+  m_Layer: 0
+  m_Name: CanvasManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1191403285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191403284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2ee337a21e4b5c43b6a9d0bbb378190, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  JoinScreen: {fileID: 1443673418}
+  ControlsScreen: {fileID: 2121012162}
+  onUpdate: {fileID: 1126686094}
+--- !u!4 &1191403286
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191403284}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 788.4001, y: 383.29352, z: -182.43915}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1270273239
 GameObject:
   m_ObjectHideFlags: 0
@@ -1065,6 +1128,7 @@ GameObject:
   - component: {fileID: 1443673416}
   - component: {fileID: 1443673415}
   - component: {fileID: 1443673414}
+  - component: {fileID: 1443673418}
   m_Layer: 5
   m_Name: Join Lobby
   m_TagString: Untagged
@@ -1154,6 +1218,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!225 &1443673418
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443673413}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &1504410190
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1223,6 +1299,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed74505a5e8ebae47952a3007fb7acad, type: 3}
+--- !u!114 &1504410191 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3406380205580335419, guid: ed74505a5e8ebae47952a3007fb7acad,
+    type: 3}
+  m_PrefabInstance: {fileID: 1504410190}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a59dca335ddc21941bef349a1310a87a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1567448845
 GameObject:
   m_ObjectHideFlags: 0
@@ -2090,3 +2178,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2121012161 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9099473520740778028, guid: 508dc5c85ae2a8a4bad7590b714b1551,
+    type: 3}
+  m_PrefabInstance: {fileID: 1888357168}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &2121012162
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121012161}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
