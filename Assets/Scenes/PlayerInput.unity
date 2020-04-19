@@ -1135,7 +1135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1443673414
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1296,6 +1296,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SubmissionScreen
+      objectReference: {fileID: 0}
+    - target: {fileID: 3406380204980631093, guid: ed74505a5e8ebae47952a3007fb7acad,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed74505a5e8ebae47952a3007fb7acad, type: 3}
@@ -1690,6 +1695,11 @@ PrefabInstance:
       propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9099473520159214185, guid: 508dc5c85ae2a8a4bad7590b714b1551,
+        type: 3}
+      propertyPath: dbMobile
+      value: 
+      objectReference: {fileID: 1504410191}
     - target: {fileID: 9099473520246025353, guid: 508dc5c85ae2a8a4bad7590b714b1551,
         type: 3}
       propertyPath: m_textInfo.characterCount
@@ -1923,7 +1933,7 @@ PrefabInstance:
     - target: {fileID: 9099473520740778028, guid: 508dc5c85ae2a8a4bad7590b714b1551,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9099473520880944121, guid: 508dc5c85ae2a8a4bad7590b714b1551,
         type: 3}
@@ -2192,7 +2202,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2121012161}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0

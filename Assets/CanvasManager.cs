@@ -12,6 +12,10 @@ public class CanvasManager : MonoBehaviour
     private float increment = .05f;
     private void Start()
     {
+        JoinScreen.gameObject.SetActive(true);
+        ControlsScreen.gameObject.SetActive(false);
+        ControlsScreen.alpha = 0;
+        JoinScreen.alpha = 1;
         onUpdate.onSuccess.AddListener(Switch);
     }
 

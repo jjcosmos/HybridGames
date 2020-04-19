@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
-
+using database;
 public class CodeGenerator : MonoBehaviour
 {
 
     [SerializeField] List<Action> myActions;
     [SerializeField] TMP_InputField output; //lol
+    [SerializeField] DatabaseInteractionMobile dbMobile;
     string myTurn = "";
     public void OnButtonPress()
     {
@@ -29,5 +30,7 @@ public class CodeGenerator : MonoBehaviour
         }
         Debug.Log(myTurn);
         output.text = Utility.EncodeInt32(Utility.BASE32, Int32.Parse(myTurn));
+
+        dbMobile.SendTurnToDatabase(output.text);
     }
 }
