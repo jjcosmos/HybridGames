@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.Events;
 using System;
+using UnityEngine.SceneManagement;
 public class InputManager : MonoBehaviour
 {
     // Temporary, server will replace this code
@@ -286,6 +287,15 @@ public class InputManager : MonoBehaviour
             Debugger.instance.Push($"INPUT INVALID FOR STUN. Resetting player {player}'s turn.");
             myPlayers.RespectivePlayerTurns[player - 1].Reset();
             return;
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Asterisk))
+        {
+            int currentScene = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentScene);
         }
     }
 }

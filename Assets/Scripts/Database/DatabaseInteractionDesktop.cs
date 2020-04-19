@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Firebase.Database;
 using System.Threading.Tasks;
+using UnityEngine.Events;
 
 namespace database
 {
@@ -13,8 +14,9 @@ namespace database
         private System.Random rand = new System.Random();
         private int requests = 0; //total game code requests
 
-        private string gameID;
-        
+        public string gameID;
+        public UnityEvent OnSessionCreated;
+        [SerializeField] SessionIDUpdater updater;
 
         // Start is called before the first frame update
         async void Start()
@@ -22,13 +24,14 @@ namespace database
             database = FirebaseDatabase.DefaultInstance;
             gameID = await generateGameIDAsync();
             await database.GetReference(gameID).SetValueAsync(0);
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
             
         }
+
+        private void Awake()
+        {
+            OnSessionCreated = new UnityEvent();
+        }
+
 
         Dictionary<int, string> GetTurnFromDatabase()
         {
@@ -72,6 +75,8 @@ namespace database
                 return await generateGameIDAsync();
             }
             Debug.Log("Game code set to: " + newID);
+            //OnSessionCreated.Invoke();
+            updater.OnInitSession(newID);
             return newID;
         }
 
