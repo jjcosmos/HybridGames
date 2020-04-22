@@ -19,9 +19,9 @@ public class SessionIDUpdater : MonoBehaviour
     {
         sessionCreated = true;
         StopAllCoroutines();
-        Debugger.instance.Push($"Session Created with ID {gameID}");
+        Debugger.instance.Push($"Lobby Created with ID {gameID}");
         Debug.Log("Updating lobby id");
-        displayTxt.text = $"Session ID: {gameID}";
+        displayTxt.text = $"{gameID}";
     }
 
     private IEnumerator IAnimateText()

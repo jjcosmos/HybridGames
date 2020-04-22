@@ -64,6 +64,14 @@ public class Client : MonoBehaviour
 #endif
         Debug.Log($"Attempting to connect to {SERVER_IP}...");
         isStarted = true;
+        if(connectionID != 0)
+        {
+            LobbyScene.instance.ChangeAuthenticationMessage($"Connecting...");
+        }
+        else
+        {
+            LobbyScene.instance.ChangeAuthenticationMessage("Failed to connect to the internet.");
+        }
     }
 
     public void Shutdown()
@@ -100,9 +108,11 @@ public class Client : MonoBehaviour
                 break;
             case NetworkEventType.ConnectEvent:
                 Debug.LogError($"Connected to the server!");
+                LobbyScene.instance.ChangeAuthenticationMessage($"Connected to the gameserver!");
                 break;
             case NetworkEventType.DisconnectEvent:
                 Debug.LogError($"Disconnected from server");
+                LobbyScene.instance.ChangeAuthenticationMessage($"Disconnected from the gameserver.");
                 break;
             case NetworkEventType.Nothing:
                 break;

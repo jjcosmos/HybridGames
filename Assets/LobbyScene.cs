@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class LobbyScene : MonoBehaviour
 {
+
     [Header("Creation input")]
     [SerializeField] TMP_InputField createUsernameInput;
     [SerializeField] TMP_InputField createPasswordInput;
@@ -18,6 +19,7 @@ public class LobbyScene : MonoBehaviour
     [Header("Output")]
     [SerializeField] TextMeshProUGUI WelcomeMessage;
     [SerializeField] TextMeshProUGUI AuthenticationMessage;
+    [SerializeField] SessionIDUpdater LobbyIDMessage;
 
     [Header("Canvas")]
     [SerializeField] CanvasGroup canvasGroup;
@@ -140,7 +142,21 @@ public class LobbyScene : MonoBehaviour
     public void UpdateLobbyDisplay(int lobbyID)
     {
         lobbyDisplay.text = "Lobby ID: " + lobbyID.ToString();
+        LobbyIDMessage.OnInitSession("Lobby ID: " + lobbyID.ToString());
+        StopAllCoroutines();
+        StartCoroutine(FadeOutCanvas());
         //also save ID to send with player turns
+    }
+
+    private IEnumerator FadeOutCanvas()
+    {
+        canvasGroup.interactable = false;
+        while(canvasGroup.alpha > Mathf.Epsilon)
+        {
+            canvasGroup.alpha -= .01f;
+            yield return new WaitForSeconds(.01f);
+        }
+        canvasGroup.alpha = 0;
     }
 
     public void UpdateTurnDisplay(string turn, int player)
