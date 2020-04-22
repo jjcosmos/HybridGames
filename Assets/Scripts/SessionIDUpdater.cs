@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using database;
+
 public class SessionIDUpdater : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] DatabaseInteractionDesktop dbInteraction;
+    //[SerializeField] DatabaseInteractionDesktop dbInteraction;
     private TMPro.TextMeshProUGUI displayTxt;
     private bool sessionCreated;
     void Awake()

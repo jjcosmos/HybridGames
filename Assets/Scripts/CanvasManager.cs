@@ -8,7 +8,6 @@ public class CanvasManager : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] CanvasGroup JoinScreen;
     [SerializeField] CanvasGroup ControlsScreen;
-    [SerializeField] JoinSession onUpdate;
     private float increment = .05f;
     private void Start()
     {
@@ -16,7 +15,7 @@ public class CanvasManager : MonoBehaviour
         ControlsScreen.gameObject.SetActive(false);
         ControlsScreen.alpha = 0;
         JoinScreen.alpha = 1;
-        onUpdate.onSuccess.AddListener(Switch);
+        
     }
 
     public void Switch()
