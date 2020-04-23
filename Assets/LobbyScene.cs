@@ -15,6 +15,7 @@ public class LobbyScene : MonoBehaviour
     [Header("Login Input")]
     [SerializeField] TMP_InputField LoginUsernameInput;
     [SerializeField] TMP_InputField LoginPasswordInput;
+    [SerializeField] Button SubmitLobbyButton;
 
     [Header("Output")]
     [SerializeField] TextMeshProUGUI WelcomeMessage;
@@ -61,7 +62,10 @@ public class LobbyScene : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        ConnectionBlock.alpha = 1;
+        if (ConnectionBlock != null)
+        {
+            ConnectionBlock.alpha = 1;
+        }
     }
 
     public void OnClickCreateAccount()
@@ -103,6 +107,7 @@ public class LobbyScene : MonoBehaviour
 
     public void OnClickGetPlayerID()//also functions as a joinLobby
     {
+        SubmitLobbyButton.interactable = false;
         DisableInputs();
         if(int.TryParse(lobbyToJoin.text, out int i))
         {
@@ -112,8 +117,14 @@ public class LobbyScene : MonoBehaviour
         {
             EnableInputs();
             Debug.LogError("Please enter the number of the lobby");
+            EnableLobbyButton();
         }
         
+    }
+
+    public void EnableLobbyButton()
+    {
+        SubmitLobbyButton.interactable = true;
     }
 
 
@@ -175,7 +186,7 @@ public class LobbyScene : MonoBehaviour
 
     public void UpdateTurnDisplay(string turn, int player)
     {
-        
+        if (!Client.instance.isBoardHost) { return; }
         if (player == 1) 
         {
             //p1Out.text = turn;

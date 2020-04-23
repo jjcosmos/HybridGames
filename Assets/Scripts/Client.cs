@@ -191,7 +191,7 @@ public class Client : MonoBehaviour
             if (p1Turn != "" && p2Turn != "")
             {
                 //LobbyScene.instance.ExecuteTurn();
-                isRecievingInput = false;
+                //isRecievingInput = false;
             }
             LobbyScene.instance.UpdateTurnDisplay(ost.TurnString, ost.playerID);
         }
@@ -235,6 +235,11 @@ public class Client : MonoBehaviour
         }
         else
         {
+            if (!isBoardHost)
+            {
+                LobbyScene.instance.EnableLobbyButton();
+            }
+            
             LobbyScene.instance.EnableInputs();
             Debug.LogError($"Player {ojl.assignedPlayerID} failed to join lobby {tempLobbyID}.");
         }

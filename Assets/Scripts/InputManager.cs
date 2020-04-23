@@ -148,13 +148,20 @@ public class InputManager : MonoBehaviour
     {
         if(myPlayers.RespectivePlayerTurns[player-1].IsComplete())
         {
-            SubmitButton.interactable = true;
-            Debugger.instance.Push("Turn can be completed");
+            if (SubmitButton != null) 
+            {
+                SubmitButton.interactable = true;
+                Debugger.instance.Push("Turn can be completed");
+            }
+            
         }
         else
         {
-            SubmitButton.interactable = false;
-            Debugger.instance.Push($"Turn can not be completed. Completed turns is {myPlayers.RespectivePlayerTurns[player - 1].GetDirectionsCount()}");
+            if (SubmitButton != null)
+            {
+                SubmitButton.interactable = false;
+                Debugger.instance.Push($"Turn can not be completed. Completed turns is {myPlayers.RespectivePlayerTurns[player - 1].GetDirectionsCount()}");
+            }
         }
 
         UpdateExecuteButton();
@@ -223,12 +230,15 @@ public class InputManager : MonoBehaviour
 
             if(currentTurnI >= 3)
             {
+                StopAllCoroutines();
                 ResetAll();
             }
             OnTurnExecute.Invoke();
         }
         else
         {
+            Debugger.instance.Push("ACTION # EXEEDED 3. END OF TURN REACHED");
+            Debug.LogError("ACTION # EXEEDED 3. END OF TURN REACHED");
             ResetAll();
             Client.instance.isRecievingInput = true;
         }
@@ -239,6 +249,9 @@ public class InputManager : MonoBehaviour
 
     private void ResetAll()
     {
+        StopAllCoroutines();
+        Client.instance.ResetTurns();
+        Client.instance.isRecievingInput = true;
         foreach (PlayerMoveSet player in myPlayers.RespectivePlayerTurns)
         {
             currentTurnI = 0;

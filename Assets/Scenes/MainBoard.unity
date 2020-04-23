@@ -1200,6 +1200,16 @@ PrefabInstance:
       propertyPath: ConnectionBlock
       value: 
       objectReference: {fileID: 2087685722}
+    - target: {fileID: 359980252422392580, guid: 99ddf0377ca22f749881653602e964d2,
+        type: 3}
+      propertyPath: p1OutConfirm
+      value: 
+      objectReference: {fileID: 1946714660}
+    - target: {fileID: 359980252422392580, guid: 99ddf0377ca22f749881653602e964d2,
+        type: 3}
+      propertyPath: p2OutConfirm
+      value: 
+      objectReference: {fileID: 2071693155}
     - target: {fileID: 359980252455818542, guid: 99ddf0377ca22f749881653602e964d2,
         type: 3}
       propertyPath: m_AnchorMin.y

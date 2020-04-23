@@ -11,8 +11,10 @@ public class CodeGenerator : MonoBehaviour
     [SerializeField] List<Action> myActions;
     [SerializeField] TMP_InputField output; //lol
     string myTurn = "";
+    
     public void OnButtonPress()
     {
+        string temp;
         int rand = UnityEngine.Random.Range(1, 10);
         myTurn = rand.ToString();
         foreach (var action in myActions)
@@ -28,8 +30,9 @@ public class CodeGenerator : MonoBehaviour
             myTurn += act + dir; 
         }
         Debug.Log(myTurn);
-        output.text = Utility.EncodeInt32(Utility.BASE32, Int32.Parse(myTurn));
-        output.text = rand.ToString() + myTurn;
+        //output.text = Utility.EncodeInt32(Utility.BASE32, Int32.Parse(myTurn));
+        temp = myTurn;
+        output.text = temp;
         LobbyScene.instance.OnClickSubmitTurn();
         
     }
