@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 public class Client : MonoBehaviour
 {
     public bool isBoardHost;
+    public bool isRecievingInput = true;
     public int lobbyID = -1;
     public int myPlayerID = -1;
     private int tempLobbyID;
@@ -174,9 +175,14 @@ public class Client : MonoBehaviour
     private void OnSendTurn(Net_OnSendTurn ost)
     {
         
-        if (isBoardHost)
+        if (isBoardHost && isRecievingInput)
         {
+            //TODO log player turns
             LobbyScene.instance.UpdateTurnDisplay(ost.TurnString, ost.playerID);
+        }
+        else if (!isRecievingInput)
+        {
+            Debug.LogError("Not recieving input at this moment");
         }
 
     }
@@ -192,11 +198,20 @@ public class Client : MonoBehaviour
     {
         if (ojl.succeeded)
         {
-            LobbyScene.instance.EnableInputs();
-            LobbyScene.instance.UpdatePlayerIDs(ojl.assignedPlayerID);
-            lobbyID = tempLobbyID;//if the ojl succeeds, the lobby is set to the one specified in the og send
-            myPlayerID = ojl.assignedPlayerID;
-            Debug.LogError($"Player {ojl.assignedPlayerID} joined lobby {lobbyID}!");
+            if (!isBoardHost)
+            {
+                LobbyScene.instance.EnableInputs();
+                LobbyScene.instance.UpdatePlayerIDs(ojl.assignedPlayerID);
+                lobbyID = tempLobbyID;//if the ojl succeeds, the lobby is set to the one specified in the og send
+                myPlayerID = ojl.assignedPlayerID;
+                Debug.LogError($"Player {ojl.assignedPlayerID} joined lobby {lobbyID}!");
+            }
+            else
+            {
+                LobbyScene.instance.UpdateConnectionStatus(ojl.assignedPlayerID);
+                Debug.LogError($"Player {ojl.assignedPlayerID} joined lobby {lobbyID}!");
+            }
+            
         }
         else
         {

@@ -165,7 +165,7 @@ public class InputManager : MonoBehaviour
         ButtonSfx.bSFX.PlayButtonSound();
         if (currentTurnI < 3)
         {
-
+            Client.instance.isRecievingInput = false;
             GamestateManager.ResultType result = gameManager.TryMovePlayers(myPlayers, currentTurnI);
             
 
@@ -214,7 +214,7 @@ public class InputManager : MonoBehaviour
         else
         {
             ResetAll();
-
+            Client.instance.isRecievingInput = true;
         }
         
         UpdateExecuteButton();
@@ -244,8 +244,9 @@ public class InputManager : MonoBehaviour
         ExecuteTurnsButton.interactable = true;
     }
 
-    public void ProcessInput(string numString)
+    public void ProcessInput(string numString, int player) //player is 1 or 2 in this case
     {
+        this.player = player;
         bool attackFlag = false;
         if(numString.Length != 7 && numString.Length !=5)
         {

@@ -31,6 +31,8 @@ public class LobbyScene : MonoBehaviour
     [Header("TurnOutput")]
     [SerializeField] TextMeshProUGUI p1Out;
     [SerializeField] TextMeshProUGUI p2Out;
+    [SerializeField] TextMeshProUGUI p1OutConfirm;
+    [SerializeField] TextMeshProUGUI p2OutConfirm;
 
     [Header("Lobby")]
     [SerializeField] TextMeshProUGUI lobbyDisplay;
@@ -41,6 +43,12 @@ public class LobbyScene : MonoBehaviour
     [SerializeField] TextMeshProUGUI playerBID;
     [SerializeField] Button playerAButton;
     [SerializeField] Button playerBButton;
+
+    [Header("Player Connections")]
+    [SerializeField] Image player1Connected;
+    [SerializeField] Image player2Connected;
+    [SerializeField] Sprite ConnectedIcon;
+    [SerializeField] Sprite DisconnectedIcon;
 
     public static LobbyScene instance;
     private bool firstFlag = true;
@@ -161,17 +169,38 @@ public class LobbyScene : MonoBehaviour
 
     public void UpdateTurnDisplay(string turn, int player)
     {
+        
         if (player == 1) 
         {
-            p1Out.text = turn;
+            //p1Out.text = turn;
+            p1OutConfirm.text = "Player 1 Ready!";
         }
         else if (player == 2)
         {
-            p2Out.text = turn;
+            //p2Out.text = turn;
+            p2OutConfirm.text = "Player 2 Ready!";
         }
         else
         {
             Debug.LogError("Bad player recieved");
+        }
+    }
+
+    public void ResetTurnDisplay()//TODO actually use this
+    {
+        p1OutConfirm.text = "Waiting on player 1...";
+        p2OutConfirm.text = "Waiting on player 2...";
+    }
+
+    public void UpdateConnectionStatus(int player)
+    {
+        if(player == 1)
+        {
+            player1Connected.sprite = ConnectedIcon;
+        }
+        else if (player == 2)
+        {
+            player2Connected.sprite = ConnectedIcon;
         }
     }
 }

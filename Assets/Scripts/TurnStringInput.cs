@@ -23,7 +23,7 @@ public class TurnStringInput : MonoBehaviour
             //Debug.LogError("Done editing");
             string decoded = Utility.DecodeInt32(Utility.BASE32, newString).ToString();
             Debug.Log(decoded);
-            myInput.ProcessInput(decoded);
+            myInput.ProcessInput(decoded,1);//the 1 is PH
             ButtonSfx.bSFX.PlayButtonSound();
         }
         
