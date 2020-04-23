@@ -21,21 +21,21 @@ public class ScoreDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        scoreText = GetComponent<TextMeshProUGUI>();
+        //scoreText = GetComponent<TextMeshProUGUI>();
     }
 
     // yeah I know this kinda sucks
     void FixedUpdate()
     {
-        player1Inventory.text = gameState.player1inventory.ToString();
-        player1Cache.text = gameState.player1cache.ToString();
-        player1Score.text = gameState.player1score.ToString();
+        player1Inventory.text = "INV: " + gameState.player1inventory.ToString();
+        player1Cache.text = "CACHE: " + gameState.player1cache.ToString();
+        player1Score.text = "SCORE: " + gameState.player1score.ToString();
 
-        player2Inventory.text = gameState.player2inventory.ToString();
-        player2Cache.text = gameState.player2cache.ToString();
-        player2Score.text = gameState.player2score.ToString();
+        player2Inventory.text = "INV: " + gameState.player2inventory.ToString();
+        player2Cache.text = "CACHE: " + gameState.player2cache.ToString();
+        player2Score.text = "SCORE: " + gameState.player2score.ToString();
 
 
-        scoreText.text = $"P1-    I:{gameState.player1inventory}  C:{gameState.player1cache}  S:{gameState.player1score} \nP2-    I:{gameState.player2inventory}  C:{gameState.player2cache}  S:{gameState.player2score}";
+        //scoreText.text = $"P1-    I:{gameState.player1inventory}  C:{gameState.player1cache}  S:{gameState.player1score} \nP2-    I:{gameState.player2inventory}  C:{gameState.player2cache}  S:{gameState.player2score}";
     }
 }
