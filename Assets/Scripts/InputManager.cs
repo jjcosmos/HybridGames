@@ -160,6 +160,22 @@ public class InputManager : MonoBehaviour
         UpdateExecuteButton();
     }
 
+    public void EmulateExecute()
+    {
+        ExecuteTurnsButton.interactable = false;
+        StartCoroutine(DoTurns());
+    }
+
+    private IEnumerator DoTurns()
+    {
+        while(currentTurnI < 3)
+        {
+            OnExecutePressed();
+            yield return new WaitForSeconds(3f);
+        }
+        Client.instance.ResetTurns();
+    }
+
     public void OnExecutePressed()
     {
         ButtonSfx.bSFX.PlayButtonSound();

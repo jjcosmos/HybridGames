@@ -29,7 +29,8 @@ public class CodeGenerator : MonoBehaviour
         }
         Debug.Log(myTurn);
         output.text = Utility.EncodeInt32(Utility.BASE32, Int32.Parse(myTurn));
-
+        output.text = "rand" + myTurn;
+        LobbyScene.instance.OnClickSubmitTurn();
         
     }
 }

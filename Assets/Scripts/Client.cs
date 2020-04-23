@@ -5,13 +5,13 @@ using UnityEngine.Networking;
 public class Client : MonoBehaviour
 {
     public bool isBoardHost;
-    public bool isRecievingInput = true;
+    public bool isRecievingInput = false;
     public int lobbyID = -1;
     public int myPlayerID = -1;
     private int tempLobbyID;
     private string p1Turn;
     private string p2Turn;
-    public static Client instance {get; set; }
+    public static Client instance { get; set; }
 
     private byte reliableChannel;
     private int hostID;
@@ -29,7 +29,7 @@ public class Client : MonoBehaviour
 #endif
     private const int BYTE_SIZE = 1024;
 
-#region Monobehaviour
+    #region Monobehaviour
     private void Start()
     {
         instance = this;
@@ -40,7 +40,7 @@ public class Client : MonoBehaviour
     {
         UpdateMessagePump();
     }
-#endregion
+    #endregion
 
     public void Init()
     {
@@ -65,7 +65,7 @@ public class Client : MonoBehaviour
 #endif
         Debug.Log($"Attempting to connect to {SERVER_IP}...");
         isStarted = true;
-        if(connectionID != 0)
+        if (connectionID != 0)
         {
             LobbyScene.instance.ChangeAuthenticationMessage($"Connecting...");
         }
@@ -125,7 +125,7 @@ public class Client : MonoBehaviour
         }
     }
 
-#region on data
+    #region on data
     private void OnData(int cnnID, int channelID, int recHostID, NetMsg msg)
     {
         Debug.Log("Recieved a mesage of type " + msg.OP);
@@ -174,13 +174,28 @@ public class Client : MonoBehaviour
 
     private void OnSendTurn(Net_OnSendTurn ost)
     {
-        
+
         if (isBoardHost && isRecievingInput)
         {
             //TODO log player turns
+            if (ost.playerID == 1)
+            {
+                p1Turn = ost.TurnString;
+                LobbyScene.instance.ProcessPlayerInput(p1Turn, 1);
+            }
+            else
+            {
+                p2Turn = ost.TurnString;
+                LobbyScene.instance.ProcessPlayerInput(p2Turn, 2);
+            }
+            if (p1Turn != "" && p2Turn != "")
+            {
+                //LobbyScene.instance.ExecuteTurn();
+                isRecievingInput = false;
+            }
             LobbyScene.instance.UpdateTurnDisplay(ost.TurnString, ost.playerID);
         }
-        else if (!isRecievingInput)
+        else if (!isRecievingInput && isBoardHost)
         {
             Debug.LogError("Not recieving input at this moment");
         }
@@ -205,26 +220,31 @@ public class Client : MonoBehaviour
                 lobbyID = tempLobbyID;//if the ojl succeeds, the lobby is set to the one specified in the og send
                 myPlayerID = ojl.assignedPlayerID;
                 Debug.LogError($"Player {ojl.assignedPlayerID} joined lobby {lobbyID}!");
+                LobbyScene.instance.UpdateNonBoardCanvas();
+                LobbyScene.instance.UpdateLobbyDisplay(lobbyID);
             }
             else
             {
                 LobbyScene.instance.UpdateConnectionStatus(ojl.assignedPlayerID);
                 Debug.LogError($"Player {ojl.assignedPlayerID} joined lobby {lobbyID}!");
             }
-            
+            if (isBoardHost && ojl.assignedPlayerID == 2)
+            {
+                isRecievingInput = true;
+            }
         }
         else
         {
             LobbyScene.instance.EnableInputs();
             Debug.LogError($"Player {ojl.assignedPlayerID} failed to join lobby {tempLobbyID}.");
         }
-        
-        
+
+
     }
 
-#endregion
+    #endregion
 
-#region Send
+    #region Send
     public void SendServer(NetMsg msg)
     {
         //where we hold data
@@ -282,7 +302,26 @@ public class Client : MonoBehaviour
         tempLobbyID = lobbyID;
         SendServer(jl);
     }
-#endregion
+    #endregion
 
-   
+    public void ThrowBadTurnError(int player)
+    {
+        if(player == 1)
+        {
+            p1Turn = "";
+            Debug.LogError("Player 1's turn is invalid");
+        }
+        else
+        {
+            p2Turn = "";
+            Debug.LogError("Player 2's turn is invalid");
+
+        }
+    }
+    public void ResetTurns()
+    {
+        p1Turn = "";
+        p2Turn = "";
+        isRecievingInput = true;
+    }
 }

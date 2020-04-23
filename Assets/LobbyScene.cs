@@ -23,10 +23,13 @@ public class LobbyScene : MonoBehaviour
 
     [Header("Canvas")]
     [SerializeField] CanvasGroup canvasGroup;
+    [SerializeField] CanvasManager canvasManager;
 
     [Header("TurnInput")]
     [SerializeField] TMP_InputField p1Input;
     [SerializeField] TMP_InputField p2Input;
+    [SerializeField] Button SubmitButton;
+    [SerializeField] CanvasGroup ConnectionBlock;
 
     [Header("TurnOutput")]
     [SerializeField] TextMeshProUGUI p1Out;
@@ -50,11 +53,15 @@ public class LobbyScene : MonoBehaviour
     [SerializeField] Sprite ConnectedIcon;
     [SerializeField] Sprite DisconnectedIcon;
 
+    [Header("Board Client")]
+    [SerializeField] InputManager myInputManager;
+
     public static LobbyScene instance;
     private bool firstFlag = true;
     private void Awake()
     {
         instance = this;
+        ConnectionBlock.alpha = 1;
     }
 
     public void OnClickCreateAccount()
@@ -132,27 +139,26 @@ public class LobbyScene : MonoBehaviour
 
     public void UpdatePlayerIDs(int ID)
     {
-        if (firstFlag)
-        {
-            playerAID.text = ID.ToString();
-            firstFlag = false;
-            playerAButton.interactable = false;
+        
+        playerAID.text = "You are player " +  ID.ToString();
             
-        }
-        else
-        {
-            playerBID.text = ID.ToString();
-            firstFlag = false;
-            playerBButton.interactable = false;
-        }
     }
 
     public void UpdateLobbyDisplay(int lobbyID)
     {
-        lobbyDisplay.text = "Lobby ID: " + lobbyID.ToString();
-        LobbyIDMessage.OnInitSession("Lobby ID: " + lobbyID.ToString());
-        StopAllCoroutines();
-        StartCoroutine(FadeOutCanvas());
+        if (Client.instance.isBoardHost)
+        {
+            lobbyDisplay.text = "Lobby ID: " + lobbyID.ToString();
+            LobbyIDMessage.OnInitSession("Lobby ID: " + lobbyID.ToString());
+            //StopAllCoroutines();
+            StartCoroutine(FadeOutCanvas());
+        }
+        else
+        {
+            lobbyDisplay.text = "Lobby ID: " + lobbyID.ToString();
+            
+        }
+        
         //also save ID to send with player turns
     }
 
@@ -186,6 +192,8 @@ public class LobbyScene : MonoBehaviour
         }
     }
 
+
+
     public void ResetTurnDisplay()//TODO actually use this
     {
         p1OutConfirm.text = "Waiting on player 1...";
@@ -202,5 +210,38 @@ public class LobbyScene : MonoBehaviour
         {
             player2Connected.sprite = ConnectedIcon;
         }
+        if(player2Connected.sprite == ConnectedIcon && player1Connected.sprite == ConnectedIcon)
+        {
+            StartCoroutine(FadeOutBlocker());
+        }
+    }
+
+    private IEnumerator FadeOutBlocker()
+    {
+        ConnectionBlock.interactable = false;
+        ConnectionBlock.blocksRaycasts = false;
+        while (ConnectionBlock.alpha > Mathf.Epsilon)
+        {
+            ConnectionBlock.alpha -= .01f;
+            yield return new WaitForSeconds(.01f);
+        }
+        ConnectionBlock.alpha = 0;
+    }
+
+    public void ProcessPlayerInput(string turn, int playerID)
+    {
+        Debugger.instance.Push($"{playerID} submitting turn {turn}");
+        myInputManager.ProcessInput(turn,playerID);
+    }
+
+    public void UpdateNonBoardCanvas()
+    {
+        canvasManager.Switch();
+    }
+
+    public void ExecuteTurn()
+    {
+        myInputManager.EmulateExecute();
+        ResetTurnDisplay();
     }
 }
