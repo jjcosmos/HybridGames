@@ -15,6 +15,7 @@ public class ButtonSfx : MonoBehaviour
 
     public void PlayButtonSound()
     {
+        Debug.Log("Playing Button Sound");
         myAudio.PlayOneShot(buttonSound);
     }
 }

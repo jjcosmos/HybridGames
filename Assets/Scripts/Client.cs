@@ -23,7 +23,7 @@ public class Client : MonoBehaviour
     private const int PORT = 26000;
     private const int WEB_PORT = 26001;
 #if UNITY_EDITOR
-    private const string SERVER_IP = "127.0.0.1";
+    private const string SERVER_IP = "76.176.70.18";
 #else
     private const string SERVER_IP = "76.176.70.18";
 #endif
@@ -177,23 +177,28 @@ public class Client : MonoBehaviour
 
         if (isBoardHost && isRecievingInput)
         {
+            bool validSend = false;
             //TODO log player turns
             if (ost.playerID == 1)
             {
                 p1Turn = ost.TurnString;
-                LobbyScene.instance.ProcessPlayerInput(p1Turn, 1);
+                validSend = LobbyScene.instance.ProcessPlayerInput(p1Turn, 1);
             }
             else
             {
                 p2Turn = ost.TurnString;
-                LobbyScene.instance.ProcessPlayerInput(p2Turn, 2);
+                validSend = LobbyScene.instance.ProcessPlayerInput(p2Turn, 2);
             }
             if (p1Turn != "" && p2Turn != "")
             {
                 //LobbyScene.instance.ExecuteTurn();
                 //isRecievingInput = false;
             }
-            LobbyScene.instance.UpdateTurnDisplay(ost.TurnString, ost.playerID);
+            if (validSend)
+            {
+                LobbyScene.instance.UpdateTurnDisplay(ost.TurnString, ost.playerID);
+            }
+            
         }
         else if (!isRecievingInput && isBoardHost)
         {

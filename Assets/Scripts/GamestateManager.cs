@@ -156,6 +156,7 @@ public class GamestateManager : MonoBehaviour
 
     public string GetGameboardAsText()
     {
+        return "";
         string temp = "";
         for (int i = 0; i < 5; i++)
         {

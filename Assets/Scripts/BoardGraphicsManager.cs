@@ -66,13 +66,13 @@ public class BoardGraphicsManager : MonoBehaviour
     {
         Vector2 p1LocOnArray = myGamestate.GetPlayerLocation(1);
         Vector2 p2LocOnArray = myGamestate.GetPlayerLocation(2);
-        Debug.Log($"Teleporting - P1loc at {p1LocOnArray} and P2loc at {p2LocOnArray}");
+        //Debug.Log($"Teleporting - P1loc at {p1LocOnArray} and P2loc at {p2LocOnArray}");
         player1.position = myGrid.GetGridSpaceAt((int)p1LocOnArray.x, (int)p1LocOnArray.y).transform.position;
         player2.position = myGrid.GetGridSpaceAt((int)p2LocOnArray.x, (int)p2LocOnArray.y).transform.position;
 
         p1LocOnArray = myGamestate.GetPlayerLocation(1);
         p2LocOnArray = myGamestate.GetPlayerLocation(2);
-        Debug.Log($"Teleported - P1loc at {myGrid.GetGridSpaceAt((int)p1LocOnArray.x, (int)p1LocOnArray.y).name} and P2loc at {myGrid.GetGridSpaceAt((int)p2LocOnArray.x, (int)p2LocOnArray.y).name}");
+        //Debug.Log($"Teleported - P1loc at {myGrid.GetGridSpaceAt((int)p1LocOnArray.x, (int)p1LocOnArray.y).name} and P2loc at {myGrid.GetGridSpaceAt((int)p2LocOnArray.x, (int)p2LocOnArray.y).name}");
         myAudioSource.PlayOneShot(moveSound);
     }
 

@@ -109,6 +109,13 @@ public class PlayerMoveSet
     
     public Vector2 GetActionAt(int index)
     {
+        //if(Directions.Exists[index])
+        if(Directions.Count -1 < index)
+        {
+            string combindedString = string.Join(",", ActionTypes);
+            Debug.LogError($"Trying to access an invalid index {index} of {combindedString}");
+            throw new System.Exception($"Trying to access an invalid index {index} of {combindedString}");
+        }
         return new Vector2(Directions[index], ActionTypes[index]);
     }
 

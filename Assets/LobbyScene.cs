@@ -239,10 +239,11 @@ public class LobbyScene : MonoBehaviour
         ConnectionBlock.alpha = 0;
     }
 
-    public void ProcessPlayerInput(string turn, int playerID)
+    public bool ProcessPlayerInput(string turn, int playerID)
     {
         Debugger.instance.Push($"{playerID} submitting turn {turn}");
-        myInputManager.ProcessInput(turn,playerID);
+        bool valid = myInputManager.ProcessInput(turn,playerID);
+        return valid;
     }
 
     public void UpdateNonBoardCanvas()
