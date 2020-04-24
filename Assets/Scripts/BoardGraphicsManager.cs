@@ -21,8 +21,10 @@ public class BoardGraphicsManager : MonoBehaviour
     [SerializeField] AudioClip moveSound;
 
     private AudioSource myAudioSource;
+    private bool canPlaysound;
     void Start()
     {
+        canPlaysound = true;
         myAudioSource = GetComponent<AudioSource>();
         myInputManager.OnTurnExecute.AddListener(OnNewTurn);
         Vector2 p1LocOnArray = myGamestate.GetPlayerLocation(1);
@@ -73,9 +75,20 @@ public class BoardGraphicsManager : MonoBehaviour
         p1LocOnArray = myGamestate.GetPlayerLocation(1);
         p2LocOnArray = myGamestate.GetPlayerLocation(2);
         //Debug.Log($"Teleported - P1loc at {myGrid.GetGridSpaceAt((int)p1LocOnArray.x, (int)p1LocOnArray.y).name} and P2loc at {myGrid.GetGridSpaceAt((int)p2LocOnArray.x, (int)p2LocOnArray.y).name}");
-        myAudioSource.PlayOneShot(moveSound);
+        if (canPlaysound)
+        {
+            Debug.Log($"Played SFX at {System.DateTime.Now.Second}");
+            myAudioSource.PlayOneShot(moveSound);
+            canPlaysound = false;
+            StartCoroutine(SoundCooldown());
+        }
     }
 
+    private IEnumerator SoundCooldown()
+    {
+        yield return new WaitForSeconds(1f);
+        canPlaysound = true;
+    }
     public void OnNewTurn()
     {
         ClearPointTiles();

@@ -188,7 +188,7 @@ public class InputManager : MonoBehaviour
         {
             OnExecutePressed();
             //Debug.Log("OnExecutePressed");
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(2f);
             localTurn++;
         }
         if(canEnumerate)
