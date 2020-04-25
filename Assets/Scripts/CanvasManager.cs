@@ -9,6 +9,7 @@ public class CanvasManager : MonoBehaviour
     [SerializeField] CanvasGroup JoinScreen;
     [SerializeField] CanvasGroup ControlsScreen;
     private float increment = .05f;
+    public bool switched;
     private void Start()
     {
         JoinScreen.gameObject.SetActive(true);
@@ -25,6 +26,7 @@ public class CanvasManager : MonoBehaviour
     public IEnumerator SwitchToControls()
     {
         ControlsScreen.gameObject.SetActive(true);
+        switched = true;
         while (ControlsScreen.alpha < 1)
         {
             ControlsScreen.alpha += increment;
@@ -32,5 +34,6 @@ public class CanvasManager : MonoBehaviour
             yield return new WaitForSeconds(.05f);
         }
         JoinScreen.gameObject.SetActive(false);
+        
     }
 }
