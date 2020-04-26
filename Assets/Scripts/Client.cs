@@ -198,6 +198,10 @@ public class Client : MonoBehaviour
             {
                 LobbyScene.instance.UpdateTurnDisplay(ost.TurnString, ost.playerID);
             }
+            else
+            {
+                Debug.Log($"Invalid semd for {ost.playerID} with {ost.TurnString}");
+            }
             
         }
         else if (!isRecievingInput && isBoardHost)

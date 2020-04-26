@@ -237,8 +237,12 @@ public class GamestateManager : MonoBehaviour
         //my player moving into a space moved into
         bool condit4 =
             (p1MovetoPosition == p2MoveToPosition &&
+            (p1ActionType == 0 &&
+            player2.GetActionAt(turn).y == 0 || 
+            p1ActionType == 1 &&
+            player2.GetActionAt(turn).y == 0 ||
             p1ActionType == 0 &&
-            player2.GetActionAt(turn).y == 0);
+            player2.GetActionAt(turn).y == 1));
 
         //my player attacking space another player is in WHILE the other player is moving into MY space 
         bool condit5 =
@@ -278,18 +282,35 @@ public class GamestateManager : MonoBehaviour
             ((p1MovetoPosition) == player1.cachePosition &&
             !(player1.isTurnNulled || player1.isEliminated));
 
-        //my player moving into an empty uncontested space
+
+        /*
+        //my player moving into an Xempty uncontested space
         bool condit10 =
-            (((GetTypeAtIndex(p1MovetoPosition)) == TileType.blank || (GetTypeAtIndex(p1MovetoPosition)) == TileType.point) &&
+            (((GetTypeAtIndex(p1MovetoPosition)) == TileType.point) &&
             player2.GetPositionOfMove(this, turn, GetPlayerLocation(otherplayerIndex)) != p1MovetoPosition);
 
-        //my player moving into an empty uncontested space
+        //my player moving into an Xempty uncontested space
         bool condit10_b =
-            (((GetTypeAtIndex(p2MoveToPosition)) == TileType.blank || (GetTypeAtIndex(p2MoveToPosition)) == TileType.point) &&
+            (( (GetTypeAtIndex(p2MoveToPosition)) == TileType.point) &&
+            player2.GetPositionOfMove(this, turn, GetPlayerLocation(otherplayerIndex)) != p1MovetoPosition);
+
+    */
+        //(GetTypeAtIndex(p1MovetoPosition)) == TileType.blank || 
+
+
+        bool condit10 =
+            (
+            player2.GetPositionOfMove(this, turn, GetPlayerLocation(otherplayerIndex)) != p1MovetoPosition);
+
+        //my player moving into an Xempty uncontested space
+        bool condit10_b =
+            (
             player2.GetPositionOfMove(this, turn, GetPlayerLocation(otherplayerIndex)) != p1MovetoPosition);
 
         bool player1Cache = (p1MovetoPosition == player1.cachePosition);
         bool player2Cache = (p2MoveToPosition == player2.cachePosition);
+
+
 
         
 
@@ -381,6 +402,8 @@ public class GamestateManager : MonoBehaviour
 
         //START INDEP EVENTS
         ResultType returnType = ResultType.moved;
+        int player1VALUE = Gameboard[(int)p1CurrentPosition.x, (int)p1CurrentPosition.y];
+        int player2VALUE = Gameboard[(int)p2CurrentPosition.x, (int)p2CurrentPosition.y];
         if (condit10)
         {
             if (GetTypeAtIndex(p1MovetoPosition) == TileType.point)
@@ -400,9 +423,19 @@ public class GamestateManager : MonoBehaviour
                     
                 }
             }
-            int playerValue = Gameboard[(int)p1CurrentPosition.x, (int)p1CurrentPosition.y];
-            EditValueAt((int)p1MovetoPosition.x, (int)p1MovetoPosition.y, playerValue);
-            EditValueAt((int)p1CurrentPosition.x, (int)p1CurrentPosition.y, 0);
+            //int playerValue = Gameboard[(int)p1CurrentPosition.x, (int)p1CurrentPosition.y];
+            Debug.LogError($"P1 TURN {turn} EDITING VALUE AT {(int)p1MovetoPosition.x},{(int)p1MovetoPosition.y} TO BE {player1VALUE}. WAS {Gameboard[(int)p1MovetoPosition.x, (int)p1MovetoPosition.y]}");
+            Debug.LogError($"p2 TURN {turn} EDITING VALUE AT {(int)p2MoveToPosition.x},{(int)p2MoveToPosition.y} TO BE {player2VALUE}. WAS {Gameboard[(int)p2MoveToPosition.x, (int)p2MoveToPosition.y]}");
+            EditValueAt((int)p1MovetoPosition.x, (int)p1MovetoPosition.y, player1VALUE);
+            if((int)player1.GetActionAt(turn).y != 1)
+            {
+                EditValueAt((int)p1CurrentPosition.x, (int)p1CurrentPosition.y, 0);
+                if (p2MoveToPosition == p1CurrentPosition)
+                {
+                    EditValueAt((int)p1CurrentPosition.x, (int)p1CurrentPosition.y, 20);
+                }
+            }
+            
         }
         if (condit10_b)
         {
@@ -425,15 +458,26 @@ public class GamestateManager : MonoBehaviour
 
                 }
             }
-            int playerValue = Gameboard[(int)p2CurrentPosition.x, (int)p2CurrentPosition.y];
-            EditValueAt((int)p2MoveToPosition.x, (int)p2MoveToPosition.y, playerValue);
-            EditValueAt((int)p2CurrentPosition.x, (int)p2CurrentPosition.y, 0);
+            //int playerValue = Gameboard[(int)p2CurrentPosition.x, (int)p2CurrentPosition.y];
+            Debug.LogError($"P1 TURN {turn} EDITING VALUE AT {(int)p1MovetoPosition.x},{(int)p1MovetoPosition.y} TO BE {player1VALUE}. WAS {Gameboard[(int)p1MovetoPosition.x, (int)p1MovetoPosition.y]}");
+            Debug.LogError($"P2 TURN {turn} EDITING VALUE AT {(int)p2MoveToPosition.x},{(int)p2MoveToPosition.y} TO BE {player2VALUE}. WAS {Gameboard[(int)p2MoveToPosition.x, (int)p2MoveToPosition.y]}");
+            EditValueAt((int)p2MoveToPosition.x, (int)p2MoveToPosition.y, player2VALUE);
+            if ((int)player2.GetActionAt(turn).y != 1 )
+            {
+                EditValueAt((int)p2CurrentPosition.x, (int)p2CurrentPosition.y, 0);
+                if (p1MovetoPosition == p2CurrentPosition)
+                {
+                    EditValueAt((int)p2CurrentPosition.x, (int)p2CurrentPosition.y, 10);
+                }
+            }
+            
         }
 
         if(returnType == ResultType.endByCache)
         {
             ShiftCacheAndReset();
         }
+        Debug.Log("returning move of type" + returnType);
         return returnType;
         //END INDEP EVENTS
 
