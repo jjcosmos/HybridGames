@@ -47,6 +47,7 @@ public class InputManager : MonoBehaviour
         OnDirectionSliderValueChanged();
         OnActionSliderValueChanged();
         //UpdateSubmitButton();
+        ExecuteTurnsButton.interactable = false;
         //currentMoves = new PlayerMoveSet();
     }
 
@@ -93,18 +94,30 @@ public class InputManager : MonoBehaviour
             if(act != 1)
             {
                 myPlayers.RespectivePlayerTurns[player-1].AddMove(dir, act);
+                Debug.Log("Adding move");
             }
             else
             {
                 myPlayers.RespectivePlayerTurns[player - 1].AddMove(0, act);
+                Debug.Log("Adding move");
             }
 
             return true;
         }
         else
         {
-            Debugger.instance.Push("Turn is complete. Nothing else can be added at the moment.");
-            return false;
+            Debugger.instance.Push($"Chain validity if {CheckChainValidity()} \n Valid type is {isVaildType}");
+
+            if (canBeCompleted)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
+            
         }
         //UpdateSubmitButton();
     }
@@ -312,7 +325,7 @@ public class InputManager : MonoBehaviour
 
             
 
-            if(turnAction < 3 && turnDirection < 5)
+            if(turnAction <= 3 && turnDirection <= 4)
             {
                 dir = turnDirection;
                 act = turnAction;

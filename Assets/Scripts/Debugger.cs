@@ -9,7 +9,7 @@ public class Debugger : MonoBehaviour
     public static Debugger instance;
     TextMeshProUGUI Log;
     [SerializeField] List<string> LogText;
-    int maxLines = 15;
+    int maxLines = 25;
     void Awake()
     {
         instance = this;
