@@ -10304,7 +10304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e81f4677b5e92d41bb0584432cb1744, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableDebugging: 1
+  enableDebugging: 0
   LogText: []
 --- !u!1 &1760902876
 GameObject:
